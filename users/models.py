@@ -4,4 +4,5 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    cargo = models.TextField(max_length=20, blank=False)
+    tipo_usuario = models.TextField(max_length=20, blank=False)
+    telefone = models.TextField(max_length=15, blank=False)
