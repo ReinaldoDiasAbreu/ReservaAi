@@ -14,10 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from ReservaAi.views import home
 
-urlpatterns = [
+url_default = [
+    # Django admin
     path('admin/', admin.site.urls),
-    path('', home, name='url_home'),
+
+    # User
+    path("accounts/", include("allauth.urls")),
+
 ]
+
+url_welcome = [
+    # Welcome
+    path('', home, name='url_home'),
+
+]
+
+urlpatterns = url_default + url_welcome
