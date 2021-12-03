@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'crispy_forms',
     # Local Apps
     'ReservaAi.apps.ReservaaiConfig',
     'users.apps.UsersConfig',
@@ -156,6 +157,18 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
-
 LOGIN_REDIRECT_URL = "/"
+ACCOUNT_SESSION_REMEMBER = True
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+
+# Crispy forms
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"

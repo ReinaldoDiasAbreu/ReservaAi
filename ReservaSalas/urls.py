@@ -15,21 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from ReservaAi.views import home
 
 url_default = [
     # Django admin
     path('admin/', admin.site.urls),
 
+]
+
+user_manager = [
     # User
     path("accounts/", include("allauth.urls")),
-
+    path("", include("users.urls", namespace="users")),
 ]
 
-url_welcome = [
-    # Welcome
-    path('', home, name='url_home'),
-
+system = [
+    path("", include("ReservaAi.urls", namespace="system")),
 ]
 
-urlpatterns = url_default + url_welcome
+urlpatterns = url_default + user_manager + system
