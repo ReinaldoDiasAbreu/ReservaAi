@@ -9,5 +9,5 @@ class UserAdmin(auth_admin.UserAdmin):
     add_form = UserCreationForm
     model = User
     fieldsets = auth_admin.UserAdmin.fieldsets + (
-        ("Sobre o usuário", {"fields": ("cargo", )}),
+        ("Sobre o usuário", {"fields": ("tipo_usuario", "telefone")}),
     )
