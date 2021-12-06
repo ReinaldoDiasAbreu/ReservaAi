@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Local Apps
     'ReservaAi.apps.ReservaaiConfig',
     'users.apps.UsersConfig',
+    'campus.apps.CampusConfig',
 ]
 
 MIDDLEWARE = [
