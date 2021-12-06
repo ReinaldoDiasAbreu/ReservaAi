@@ -12,6 +12,36 @@
             <div class="container">
                 <a class="navbar-brand" href="{% url 'users:home' %}">Reserva Aí</a>
                 <ul class="navbar-nav">
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Cadastro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Reservas</a>
+                    </li>
+                    {% endif %}
+
+                    {% if user.is_authenticated and user.tipo_usuario == 'CoordenadorEnsino' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Campus</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Coordenadores</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Salas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Equipamento</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+                <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Sair</a>
