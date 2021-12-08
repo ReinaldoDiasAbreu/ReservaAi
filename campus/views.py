@@ -2,13 +2,11 @@ from django.shortcuts import render
 
 
 def view_salas(request):
-    data = {}
-    data['projects'] = Project.objects.all()
-    form = ProjectForm(request.POST or None)
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            return render(request, 'campus/view_salas.html')
+        else:
+            return render(request, 'campus/permission_error.html')
+    except:
+        return render(request, 'campus/login_error.html')
 
-    if form.is_valid():
-        form.save()
-        return redirect('url_home')
-
-    data['form'] = form
-    return render(request, 'projects/home.html', data)
