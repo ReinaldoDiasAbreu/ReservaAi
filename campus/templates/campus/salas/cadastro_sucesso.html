@@ -1,0 +1,8 @@
+{% extends 'home.html' %}
+
+{% block content %}
+    <div class="alert alert-success" role="alert">
+    <a href="{% url 'campus:sala' %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Voltar</a>
+        <p>{{ mensagem }}</p>
+    </div>
+{% endblock %}

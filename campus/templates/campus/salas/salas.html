@@ -1,0 +1,58 @@
+{% extends 'template-view-wide-right.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-dir %}
+<div class="row">
+    <form method="GET" action="#" name="form_predio">
+    {% csrf_token %}
+      <div class="form-row align-items-center">
+        <div class="col-auto my-1">
+          <label class="mr-sm-2 sr-only" for="predioselect">Escolha o prédio</label>
+          <select class="custom-select mr-sm-2" id="predioselect" name="predioselect">
+              {% for predio in predios %}
+                  <option value="{{ predio.id }}"> {{ predio }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+      </div>
+    </form>
+</div>
+<div class="row">
+    <h3>Salas Disponíveis - {% if predio_nome != "" %} {{ predio_nome }} {% endif %}</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for sala in salas %}
+            <tr>
+                <td>{{ sala.id }} </td>
+                <td>{{ sala.nome }}</td>
+                <td>{{ sala.descricao }}</td>
+                <td><a href="{% url 'campus:view_sala' sala.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'campus:update_sala' sala.id predio.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
+                <a href="{% url 'campus:delete_sala' sala.id predio.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a></td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block content-esq %}
+<h4>Nova Sala</h4>
+<form method="POST" name="form_sala">
+    {% csrf_token %}
+    {{form | crispy}}
+    <button class="btn btn-primary" type="submit">Cadastrar</button>
+</form>
+{% endblock %}
