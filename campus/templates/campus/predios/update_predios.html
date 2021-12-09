@@ -1,0 +1,61 @@
+{% extends 'template-view-wide-left.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-left %}
+<div class="row">
+    <form method="GET" action="#" name="form_campus">
+    {% csrf_token %}
+      <div class="form-row align-items-center">
+        <div class="col-auto my-1">
+          <label class="mr-sm-2 sr-only" for="predioselect">Escolha o campus</label>
+          <select class="custom-select mr-sm-2" id="campusselect" name="campusselect">
+              {% for campus in campi %}
+                  <option value="{{ campus.id }}"> {{ campus }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+      </div>
+    </form>
+</div>
+<div class="row">
+    <h3>Prédios Disponíveis - {% if campus_nome != "" %} {{ campus_nome }} {% endif %}</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for predio in predios %}
+            <tr>
+                <td>{{ predio.id }}</td>
+                <td>{{ predio.nome }}</td>
+                <td>{{ predio.descricao }}</td>
+                <td><a href="{% url 'campus:view_predio' predio.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'campus:update_predio' predio.id campus.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
+                <a href="{% url 'campus:delete_predio' predio.id campus.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a></td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block content-right %}
+<h4>Atualizar Prédio</h4>
+<form method="POST" name="form_predio">
+    {% csrf_token %}
+    {{form | crispy}}
+    <div style="float:right;">
+        <a href="{% url 'campus:predio' %}" class="btn btn-danger active" role="button" aria-pressed="true">Cancelar</a>
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+    </div>
+</form>
+{% endblock %}

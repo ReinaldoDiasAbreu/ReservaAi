@@ -10,6 +10,12 @@ urlpatterns = [
     path("campus/delete_sala/<int:id_sala>/<int:id_predio>", views.delete_salas, name="delete_sala"),
     path("campus/update_sala/<int:id_sala>/<int:id_predio>", views.update_salas, name="update_sala"),
 
+    path("campus/predios", views.view_predios, name="predio"),
+    path("campus/new_predio", views.view_predios, name="new_predio"),
+    path("campus/view_predio/<int:id_predio>", views.ver_predio, name="view_predio"),
+    path("campus/delete_predio/<int:id_predio>/<int:id_campus>", views.delete_predios, name="delete_predio"),
+    path("campus/update_predio/<int:id_predio>/<int:id_campus>", views.update_predios, name="update_predio"),
+
     path("campus/campus", views.view_campus, name="campus"),
     path("campus/new_campus", views.view_campus, name="new_campus"),
     path("campus/view_campus/<int:id_campus>", views.ver_campus, name="view_campus"),
