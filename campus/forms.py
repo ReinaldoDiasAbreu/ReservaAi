@@ -12,3 +12,8 @@ class SalaForm(ModelForm):
             'capacidade': NumberInput(attrs={'min': 1, 'value': '1'})
         }
 
+class EquipForm(ModelForm):
+    class Meta:
+        fields = ['nome', 'descricao', 'observacao', 'campus']
+        model = Equipamento
+

@@ -1,0 +1,36 @@
+{% extends 'template-view-centered.html' %}
+
+
+ {% block content-center %}
+     <div class="row">
+        <a href="{% url 'campus:equipamento' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+     </div>
+     <div class="row">
+        <h4>Dados do Equipamento</h4>
+     </div>
+     <div class="row">
+         <form action="#">
+              <div class="form-group">
+                <label for="nome">Nome: </label>
+                <input class="form-control" type="text" id="nome" value="{{equip.nome}}" readonly disabled>
+              </div>
+
+             <div class="form-group">
+                <label for="desc">Descrição</label>
+                <textarea class="form-control" id="desc" readonly disabled>{{equip.descricao}}</textarea>
+             </div>
+             
+             <div class="form-group">
+                <label for="desc">Observação</label>
+                <textarea class="form-control" id="obs" readonly disabled>{{equip.observacao}}</textarea>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Campus </label>
+                <input class="form-control" type="text" id="nome" value="{{equip.campus}}" readonly disabled>
+             </div>
+
+            </form>
+     </div>
+ {% endblock %}
+
