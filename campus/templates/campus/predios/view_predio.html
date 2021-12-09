@@ -1,0 +1,30 @@
+{% extends 'template-view-centered.html' %}
+
+
+ {% block content-center %}
+     <div class="row">
+        <h4>Dados do Prédio</h4>
+     </div>
+     <div class="row">
+         <form action="#">
+              <div class="form-group">
+                <label for="nome">Nome: </label>
+                <input class="form-control" type="text" id="nome" value="{{predio.nome}}" readonly disabled>
+              </div>
+
+              <div class="form-group">
+                <label for="predio">Campus: </label>
+                <input class="form-control" type="text" id="campus" value="{{predio.campus}}" readonly disabled>
+              </div>
+
+             <div class="form-group">
+                <label for="desc">Descrição</label>
+                <textarea class="form-control" id="desc" readonly disabled>{{predio.descricao}}</textarea>
+              </div>
+             <div class="row" style="float:right;">
+                <a href="{% url 'campus:predio' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+             </div>
+            </form>
+     </div>
+ {% endblock %}
+

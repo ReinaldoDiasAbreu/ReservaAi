@@ -95,6 +95,97 @@ def ver_sala(request, id_sala):
         data = {'mensagem': "Não foi possível localizar a sala!"}
         return render(request, 'campus/salas/error.html', data)
 
+################# Predios ######################
+
+def view_predios(request):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            data['form'] = PredioForm(None)
+            data['campi'] = Campus.objects.all()
+
+            # Pegando campus selecionado e filtrando os prédios
+            campus = request.GET.get('campusselect', -1)
+            if campus == -1 and len(data['campi']) > 0:
+                data['campus'] = data['campi'][0]
+                data['campus_nome'] = data['campi'][0].nome
+                data['predios'] = Predio.objects.filter(campus=data['campi'][0].id)
+            else:
+                if len(data['campi']) > 0:
+                    data['campus'] = data['campi'][int(campus)-1]
+                    data['campus_nome'] = data['campi'][int(campus)-1].nome
+                    data['predios'] = Predio.objects.filter(campus=campus)
+
+            # Verificando formulário de prédios e salvando
+            if request.POST.get('nome', False):
+                form = PredioForm(request.POST or None)
+                if form.is_valid():
+                    form.save()
+                    data = {'mensagem': "Prédio adicionado com sucesso!" }
+                    return render(request, 'campus/predios/cadastro_sucesso.html', data)
+
+            data['form'] = PredioForm(None)
+            return render(request, 'campus/predios/predios.html', data)
+        else:
+            return render(request, 'campus/predios/permission_error.html')
+    except:
+        data = {'mensagem': "Ocorreu um erro interno!" }
+        return render(request, 'campus/predios/error.html', data)
+
+# Faltam as verificações quanto as reservas
+def delete_predios(request, id_predio, id_campus):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {'mensagem': "Predio " + str(id_predio) + " removido com sucesso!"}
+            campus = Campus.objects.get(id=id_campus)
+            campus.predio_set.get(pk=id_predio).delete()
+            return render(request, 'campus/predios/cadastro_sucesso.html', data)
+        else:
+            return render(request, 'campus/predios/permission_error.html')
+    except:
+        data = {'mensagem': "Não foi possível excluir o prédio!"}
+        return render(request, 'campus/predios/error.html', data)
+
+# Faltam as verificações quanto as reservas
+def update_predios(request, id_predio, id_campus):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            data['campi'] = Campus.objects.all()
+
+            data['campus'] = Campus.objects.get(id=id_campus)
+            data['campus_nome'] = data['campus'].nome
+            predio = data['campus'].predio_set.get(id=id_predio)
+
+            data['predios'] = Predio.objects.filter(campus=data['campus'].id)
+
+            form = PredioForm(request.POST or None, instance=predio)
+            if form.is_valid():
+                predio = form.instance
+                predio.campus = data['campus']
+                predio.save()
+                data = {'mensagem': "Prédio atualizado com sucesso!"}
+                return render(request, 'campus/predios/cadastro_sucesso.html', data)
+
+            data['form'] = form
+            return render(request, 'campus/predios/update_predios.html', data)
+        else:
+            return render(request, 'campus/predios/permission_error.html')
+    except:
+        data = {'mensagem': "Não foi possível atualizar o prédio!"}
+        return render(request, 'campus/predios/error.html', data)
+
+def ver_predio(request, id_predio):
+    data = {}
+    predio = Predio.objects.get(id=id_predio)
+    if predio:
+        data['predio'] = predio
+        return render(request, 'campus/predios/view_predio.html', data)
+    else:
+        data = {'mensagem': "Não foi possível localizar o prédio!"}
+        return render(request, 'campus/predios/error.html', data)
+
+
 
 ################# Campus ######################
 
