@@ -86,8 +86,10 @@ def update_salas(request, id_sala, id_predio):
 
 def ver_sala(request, id_sala):
     data = {}
-    data['sala'] = Sala.objects.get(id=id_sala)
-    if data['sala']:
+    sala = Sala.objects.get(id=id_sala)
+    if sala:
+        data['sala'] = sala
+        data['equipamentos'] = sala.equipamentos.all()
         return render(request, 'campus/salas/view_sala.html', data)
     else:
         data = {'mensagem': "Não foi possível localizar a sala!"}

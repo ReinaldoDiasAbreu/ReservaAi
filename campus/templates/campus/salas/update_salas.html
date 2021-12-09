@@ -54,5 +54,6 @@
     {% csrf_token %}
     {{form | crispy}}
     <button class="btn btn-primary" type="submit">Atualizar</button>
+    <a href="{% url 'campus:sala' %}" class="btn btn-danger active" role="button" aria-pressed="true">Cancelar</a>
 </form>
 {% endblock %}
