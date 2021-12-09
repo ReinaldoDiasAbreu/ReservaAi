@@ -12,3 +12,8 @@ class SalaForm(ModelForm):
             'capacidade': NumberInput(attrs={'min': 1, 'value': '1'})
         }
 
+class CampusForm(ModelForm):
+    class Meta:
+        fields = ['nome', 'cnpj', 'telefone', 'horaInicio', 'horaFim', 'logradouro','numero',
+                  'bairro','cidade','estado','cep']
+        model = Campus

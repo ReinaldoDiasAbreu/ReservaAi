@@ -95,4 +95,60 @@ def ver_sala(request, id_sala):
         data = {'mensagem': "Não foi possível localizar a sala!"}
         return render(request, 'campus/salas/error.html', data)
 
+def view_campus(request):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            data['campi'] = Campus.objects.all()
+
+            # Verificando formulário de salas e salvando
+            if request.POST.get('nome', False):
+                form = CampusForm(request.POST or None)
+                if form.is_valid():
+                    form.save()
+                    data = {'mensagem': "Campus adicionado com sucesso!" }
+                    return render(request, 'campus/campus/cadastro_sucesso.html', data)
+
+            data['form'] = CampusForm(None)
+            return render(request, 'campus/campus/campus.html', data)
+        else:
+            return render(request, 'campus/campus/permission_error.html')
+    except:
+        data = {'mensagem': "Ocorreu um erro interno!" }
+        return render(request, 'campus/campus/error.html', data)
+
+def ver_campus(request, id_campus):
+    data = {}
+    campus = Campus.objects.get(id=id_campus)
+    if campus:
+        data['campus'] = campus
+        return render(request, 'campus/campus/view_campus.html', data)
+    else:
+        data = {'mensagem': "Não foi possível localizar o campus!"}
+        return render(request, 'campus/campus/error.html', data)
+
+def update_campus(request, id_campus):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            data['campi'] = Campus.objects.all()
+
+            data['campus'] = Campus.objects.get(id=id_campus)
+            data['campus_nome'] = data['campus'].nome
+            campus = Campus.objects.get(id=id_campus)
+
+            form = CampusForm(request.POST or None, instance=campus)
+            if form.is_valid():
+                campus = form.instance
+                campus.save()
+                data = {'mensagem': "Campus atualizado com sucesso!"}
+                return render(request, 'campus/campus/cadastro_sucesso.html', data)
+
+            data['form'] = form
+            return render(request, 'campus/campus/update_campus.html', data)
+        else:
+            return render(request, 'permission_error.html')
+    except:
+        data = {'mensagem': "Não foi possível atualizar o campus!"}
+        return render(request, 'campus/campus/error.html', data)
 
