@@ -12,7 +12,7 @@ def view_salas(request):
 
             # Pegando prédio selecionado e filtrando as salas
             predio = request.GET.get('predioselect', -1)
-            if predio == -1:
+            if predio == -1 and len(data['predios']) > 0:
                 data['predio'] = data['predios'][0]
                 data['predio_nome'] = data['predios'][0].nome
                 data['salas'] = Sala.objects.filter(predio=data['predios'][0].id)
@@ -95,11 +95,18 @@ def ver_sala(request, id_sala):
         data = {'mensagem': "Não foi possível localizar a sala!"}
         return render(request, 'campus/salas/error.html', data)
 
+
+################# Campus ######################
+
 def view_campus(request):
     try:
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
-            data['campi'] = Campus.objects.all()
+            campus = Campus.objects.all()
+            if len(campus) > 0:
+                data['campus'] = campus[0]
+            else:
+                data['campus'] = ""
 
             # Verificando formulário de salas e salvando
             if request.POST.get('nome', False):
@@ -159,7 +166,9 @@ def view_equips(request):
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             form = EquipForm(request.POST or None)
-            data['campus'] = Campus.objects.all()[0]
+            campus = Campus.objects.all()
+            if len(campus) > 0:
+                data['campus'] = campus[0]
             data['equipamentos'] = Equipamento.objects.all()
 
             if form.is_valid():

@@ -9,8 +9,7 @@
         {{form | crispy}}
         <button class="btn btn-success" style="float: right;" type="submit">Cadastrar</button>
     </form>
-    {% endif %}
-    {% if campus != "" %}
+    {% else %}
         <div class="row"></div>
         <div class="row">
             <h3>Campus</h3>
@@ -25,9 +24,7 @@
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                {% for campus in campi %}
                     <tr>
                         <td>{{ campus.id }} </td>
                         <td>{{ campus.nome }}</td>
@@ -39,7 +36,7 @@
                             <a href="{% url 'campus:update_campus' campus.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
                         </td>
                     </tr>
-                {% endfor %}
+
                 </tbody>
             </table>
         </div>
