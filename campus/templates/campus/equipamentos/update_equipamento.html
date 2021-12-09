@@ -1,0 +1,41 @@
+{% extends 'template-view-wide-left.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-left %}
+<div class="row">
+    <h3>Equipamentos Disponíveis - {% if campus.nome != "" %} {{ campus.nome }} {% endif %}</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for equip in equipamentos %}
+            <tr>
+                <td>{{ equip.id }} </td>
+                <td>{{ equip.nome }}</td>
+                <td>{{ equip.descricao }}</td>
+                <td><a href="{% url 'campus:view_equip' equip.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'campus:update_equip' equip.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
+                <a href="{% url 'campus:delete_equip' equip.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a></td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block content-right %}
+<h4>Atualizar Equipamento</h4>
+<form method="POST" name="form_equip">
+    {% csrf_token %}
+    {{form | crispy}}
+    <button class="btn btn-primary" type="submit">Atualizar</button>
+    <a href="{% url 'campus:equipamento' %}" class="btn btn-danger active" role="button" aria-pressed="true">Cancelar</a>
+</form>
+{% endblock %}

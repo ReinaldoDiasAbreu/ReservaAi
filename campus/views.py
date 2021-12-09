@@ -96,3 +96,72 @@ def ver_sala(request, id_sala):
         return render(request, 'campus/salas/error.html', data)
 
 
+################# Equipamentos ######################
+
+def view_equips(request):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            form = EquipForm(request.POST or None)
+            data['campus'] = Campus.objects.all()[0]
+            data['equipamentos'] = Equipamento.objects.all()
+
+            if form.is_valid():
+                form.save()
+                data = {'mensagem': "Equipamento adicionado com sucesso!" }
+                return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
+
+            data['form'] = form
+            return render(request, 'campus/equipamentos/equipamentos.html', data)
+        else:
+            return render(request, 'campus/equipamentos/permission_error.html')
+    except:
+        data = {'mensagem': "Ocorreu um erro interno!" }
+        return render(request, 'campus/equipamentos/error.html', data)
+
+
+def ver_equip(request, id_equip):
+    data = {}
+    equip = Equipamento.objects.get(id=id_equip)
+    if equip:
+        data['equip'] = equip
+        return render(request, 'campus/equipamentos/view_equipamento.html', data)
+    else:
+        data = {'mensagem': "Não foi possível localizar o equipamento!"}
+        return render(request, 'campus/equipamentos/error.html', data)
+
+
+def update_equip(request, id_equip):
+    #try:
+    if request.user.tipo_usuario == 'CoordenadorEnsino':
+        data = {}
+        data['equipamentos'] = Equipamento.objects.all()
+        data['campus'] = Campus.objects.all()[0]
+        data['equipamento'] = Equipamento.objects.get(id=id_equip)
+        form = EquipForm(request.POST or None, instance=data['equipamento'])
+
+        if form.is_valid():
+            form.save()
+            data = {'mensagem': "Equipamento atualizado com sucesso!"}
+            return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
+
+        data['form'] = form
+        return render(request, 'campus/equipamentos/update_equipamento.html', data)
+    else:
+        return render(request, 'campus/equipamentos/permission_error.html')
+    '''except:
+        data = {'mensagem': "Não foi possível atualizar o equipamento!"}
+        return render(request, 'campus/equipamentos/error.html', data)'''
+
+def delete_equip(request, id_equip):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {'mensagem': "Equipamento " + str(id_equip) + " removido com sucesso!"}
+            equip = Equipamento.objects.get(id=id_equip)
+            equip.delete()
+            return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
+        else:
+            return render(request, 'campus/equipamentos/permission_error.html')
+    except:
+        data = {'mensagem': "Não foi possível excluir o equipamento!"}
+        return render(request, 'campus/equipamentos/error.html', data)
