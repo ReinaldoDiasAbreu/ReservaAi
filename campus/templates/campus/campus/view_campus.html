@@ -1,0 +1,71 @@
+{% extends 'template-view-centered.html' %}
+
+
+ {% block content-center %}
+     <div class="row">
+        <h4>Dados do campus</h4>
+     </div>
+     <div class="row">
+         <form action="#">
+              <div class="form-group">
+                <label for="nome">Nome: </label>
+                <input class="form-control" type="text" id="nome" value="{{campus.nome}}" readonly disabled>
+              </div>
+
+              <div class="form-group">
+                <label for="predio">CNPJ: </label>
+                <input class="form-control" type="text" id="cnpj" value="{{campus.cnpj}}" readonly disabled>
+              </div>
+
+             <div class="form-group">
+                <label for="desc">Telefone: </label>
+                <input class="form-control" id="telefone" readonly disabled value="{{campus.telefone}}">
+              </div>
+
+             <div class="form-group">
+                <label for="cap">Hora Início: </label>
+                <input class="form-control" type="text" id="horaInicio" value="{{campus.horaInicio}}" readonly disabled>
+              </div>
+
+             <div class="form-group">
+                <label for="cap">Hora Fim: </label>
+                <input class="form-control" type="text" id="horaFim" value="{{campus.horaFim}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="cap">Logradouro: </label>
+                <input class="form-control" type="text" id="logradouro" value="{{campus.logradouro}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="cap">Número: </label>
+                <input class="form-control" type="text" id="numero" value="{{campus.numero}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="cap">Bairro: </label>
+                <input class="form-control" type="text" id="bairro" value="{{campus.bairro}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="cap">Cidade: </label>
+                <input class="form-control" type="text" id="cidade" value="{{campus.cidade}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="cap">Estado: </label>
+                <input class="form-control" type="text" id="estado" value="{{campus.estado}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="cap">CEP: </label>
+                <input class="form-control" type="text" id="cep" value="{{campus.cep}}" readonly disabled>
+             </div>
+
+             <div class="row" style="float: right;">
+                <a href="{% url 'campus:campus' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+             </div>
+         </form>
+     </div>
+ {% endblock %}
+

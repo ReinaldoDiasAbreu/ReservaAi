@@ -1,0 +1,43 @@
+{% extends 'template-view-wide-left.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-left %}
+<div class="row">
+    <h3>Coordenadores de Curso Disponíveis - {% if campus.nome != "" %} {{ campus.nome }} {% endif %}</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Telefone</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for coordc in coordenadorescurso %}
+            <tr>
+                <td>{{ coordc.id }}</td>
+                <td>{{ coordc.first_name }}</td>
+                <td>{{ coordc.email }}</td>
+                <td>{{ coordc.telefone }}</td>
+                <td>
+                <a href="{% url 'users:view_coordenadorcurso' coordc.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'users:delete_coordenadorcurso' coordc.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block content-right %}
+<h4>Novo Coordenador de Curso</h4>
+<form method="POST" name="form_coordenadorcurso">
+    {% csrf_token %}
+    {{form | crispy}}
+    <button class="btn btn-primary" type="submit">Cadastrar</button>
+</form>
+{% endblock %}

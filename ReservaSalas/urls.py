@@ -28,8 +28,14 @@ user_manager = [
     path("", include("users.urls", namespace="users")),
 ]
 
+campus_manager = [
+    path("", include("campus.urls", namespace="campus")),
+]
+
 system = [
     path("", include("ReservaAi.urls", namespace="system")),
 ]
 
-urlpatterns = url_default + user_manager + system
+urlpatterns = url_default + user_manager + campus_manager + system
+
+

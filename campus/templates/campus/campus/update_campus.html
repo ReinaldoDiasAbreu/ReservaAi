@@ -1,0 +1,48 @@
+{% extends 'template-view-wide-left.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-left %}
+<div class="row">
+    <h3>Campus Disponível</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">CNPJ</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Cidade</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for campus in campi %}
+            <tr>
+                <td>{{ campus.id }} </td>
+                <td>{{ campus.nome }}</td>
+                <td>{{ campus.cnpj }}</td>
+                <td>{{ campus.telefone }}</td>
+                <td>{{ campus.cidade }}</td>
+                <td>
+                    <a href="{% url 'campus:view_campus' campus.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                    <a href="{% url 'campus:update_campus' campus.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
+                </td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block content-right %}
+<h4>Atualizar Campus</h4>
+<form method="POST" name="form_campus">
+    {% csrf_token %}
+    {{form | crispy}}
+    <div style="float:right">
+        <a href="{% url 'campus:campus' %}" class="btn btn-danger active" role="button" aria-pressed="true">Cancelar</a>
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+   </div>
+</form>
+{% endblock %}
