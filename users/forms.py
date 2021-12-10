@@ -16,6 +16,6 @@ class UserCreationForm(forms.UserCreationForm):
 
 class CoordenadorCursoForm(ModelForm):
     class Meta:
-        fields = ['username', 'email', 'first_name', 'last_name', 'password', 'tipo_usuario']
+        fields = ['username', 'email', 'first_name', 'last_name', 'telefone', 'password', 'tipo_usuario']
         model = User
 

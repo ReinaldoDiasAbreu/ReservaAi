@@ -10,30 +10,30 @@ class HomePageView(TemplateView):
 
 
 def view_coordenadoresCurso(request):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            form = CoordenadorCursoForm(request.POST or None)
+            campus = Campus.objects.all()
+            if len(campus) > 0:
+                data['campus'] = campus[0]
 
-    if request.user.tipo_usuario == 'CoordenadorEnsino':
-        data = {}
-        form = CoordenadorCursoForm(request.POST or None)
-        campus = Campus.objects.all()
-        if len(campus) > 0:
-            data['campus'] = campus[0]
+            data['coordenadorescurso'] = User.objects.filter(tipo_usuario="CoordenadorCurso")
 
-        #data['coordenadorescurso'] = User.objects.all()
-        data['coordenadorescurso'] = User.objects.filter(tipo_usuario="CoordenadorCurso")
+            if form.is_valid():
+                form.tipo_usuario = 'CoordenadorCurso'
+                form.save()
+                data = {'mensagem': "Coordenador de Curso adicionado com sucesso!" }
+                return render(request, 'users/coordenadorCurso/cadastro_sucesso.html', data)
 
-        if form.is_valid():
-            form.tipo_usuario = 'CoordenadorCurso'
-            form.save()
-            data = {'mensagem': "Coordenador de Curso adicionado com sucesso!" }
-            return render(request, 'users/coordenadorCurso/cadastro_sucesso.html', data)
+            data['form'] = form
+            return render(request, 'users/coordenadorCurso/coordenadorescurso.html', data)
+        else:
+            return render(request, 'users/coordenadorCurso/permission_error.html')
 
-        data['form'] = form
-        return render(request, 'users/coordenadorCurso/coordenadorescurso.html', data)
-    else:
-        return render(request, 'users/coordenadorCurso/permission_error.html')
-
-    data = {'mensagem': "Ocorreu um erro interno!" }
-    return render(request, 'users/coordenadorCurso/error.html', data)
+    except:
+        data = {'mensagem': "Ocorreu um erro interno!" }
+        return render(request, 'users/coordenadorCurso/error.html', data)
 
 
 def ver_coordenadorCurso(request, id_coordenadorcurso):
