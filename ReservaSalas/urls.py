@@ -37,3 +37,5 @@ system = [
 ]
 
 urlpatterns = url_default + user_manager + campus_manager + system
+
+
