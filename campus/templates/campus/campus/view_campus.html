@@ -61,9 +61,10 @@
                 <label for="cap">CEP: </label>
                 <input class="form-control" type="text" id="cep" value="{{campus.cep}}" readonly disabled>
              </div>
-         <div class="row" style="float: right;">
-            <a href="{% url 'campus:campus' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
-         </div>
+
+             <div class="row" style="float: right;">
+                <a href="{% url 'campus:campus' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+             </div>
          </form>
      </div>
  {% endblock %}

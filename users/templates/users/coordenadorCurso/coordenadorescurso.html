@@ -17,13 +17,12 @@
         <tbody>
         {% for coordc in coordenadorescurso %}
             <tr>
-                <td>{{ coordc.id }} </td>
+                <td>{{ coordc.id }}</td>
                 <td>{{ coordc.first_name }}</td>
                 <td>{{ coordc.email }}</td>
                 <td>{{ coordc.telefone }}</td>
                 <td>
                 <a href="{% url 'users:view_coordenadorcurso' coordc.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
-                <a href="{% url 'users:update_coordenadorcurso' coordc.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
                 <a href="{% url 'users:delete_coordenadorcurso' coordc.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a>
                 </td>
             </tr>
