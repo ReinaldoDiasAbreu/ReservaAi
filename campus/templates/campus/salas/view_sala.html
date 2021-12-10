@@ -2,9 +2,7 @@
 
 
  {% block content-center %}
-     <div class="row">
-        <a href="{% url 'campus:sala' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
-     </div>
+
      <div class="row">
         <h4>Dados da Sala</h4>
      </div>
@@ -46,6 +44,9 @@
                 </select>
               </div>
 
+            <div class="row">
+                <a href="{% url 'campus:sala' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+             </div>
             </form>
      </div>
  {% endblock %}
