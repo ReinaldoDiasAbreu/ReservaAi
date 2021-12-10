@@ -8,7 +8,7 @@ def view_salas(request):
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             data['form'] = SalaForm(None)
-            data['predios'] = Predio.objects.all()
+            data['predios'] = Predio.objects.all().order_by('nome')
 
             # Pegando prédio selecionado e filtrando as salas
             predio = request.GET.get('predioselect', -1)
@@ -18,8 +18,8 @@ def view_salas(request):
                 data['salas'] = Sala.objects.filter(predio=data['predios'][0].id)
             else:
                 if len(data['predios']) > 0:
-                    data['predio'] = data['predios'][int(predio)-1]
-                    data['predio_nome'] = data['predios'][int(predio)-1].nome
+                    data['predio'] = Predio.objects.get(id=predio)
+                    data['predio_nome'] = data['predio'].nome
                     data['salas'] = Sala.objects.filter(predio=predio)
 
             # Verificando formulário de salas e salvando
