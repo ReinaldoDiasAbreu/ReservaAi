@@ -1,0 +1,57 @@
+{% extends 'template-view-centered.html' %}
+
+
+ {% block content-center %}
+     <div class="row">
+        <a href="{% url 'users:coordenadorescurso' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+     </div>
+     <div class="row">
+        <h4>Dados do Coordenador de Curso</h4>
+     </div>
+     <div class="row">
+         <form action="#">
+             <div class="form-group">
+                <label for="nome">Usuário </label>
+                <input class="form-control" type="text" id="username" value="{{ coordenadorcurso.username }}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Email </label>
+                <input class="form-control" type="text" id="email" value="{{ coordenadorcurso.email }}" readonly disabled>
+             </div>
+
+              <div class="form-group">
+                <label for="nome">Primeiro nome: </label>
+                <input class="form-control" type="text" id="pnome" value="{{ coordenadorcurso.first_name }}" readonly disabled>
+              </div>
+
+             <div class="form-group">
+                <label for="nome">Último nome:</label>
+                <input class="form-control" type="text" id="lnome" value="{{ coordenadorcurso.last_name }}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Eh Ativo </label>
+                <input class="form-control" type="text" id="estado" value="{{ coordenadorcurso.is_active }}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Data Cadastro </label>
+                <input class="form-control" type="text" id="dtcadastro" value="{{ coordenadorcurso.date_joined }}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Cargo </label>
+                <input class="form-control" type="text" id="cargo" value="{{ coordenadorcurso.tipo_usuario }}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Telefone </label>
+                <input class="form-control" type="text" id="tel" value="{{ coordenadorcurso.telefone }}" readonly disabled>
+             </div>
+
+
+            </form>
+     </div>
+ {% endblock %}
+
