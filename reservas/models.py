@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.db import models
-from campus.models import Campus
+from campus.models import Campus, Sala
 from users.models import User as UserModel
 import datetime
 
@@ -62,11 +62,13 @@ class Periodo(models.Model):
 class Reserva(models.Model):
     titulo = models.CharField(max_length=50)
     descricao = models.CharField(max_length=250, blank=False)
-    dataInicio = models.DateField(validators=[validate_data])
-    dataFim = models.DateField(validators=[validate_data])
-    horaInicio = models.TimeField(validators=[validate_hora])
-    horaFim = models.TimeField(validators=[validate_hora])
+    dataInicio = models.DateField('Data Inicio', validators=[validate_data])
+    dataFim = models.DateField('Data Fim', validators=[validate_data])
+    horaInicio = models.TimeField('Hora Inicio', validators=[validate_hora])
+    horaFim = models.TimeField('Hora Fim', validators=[validate_hora])
     periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, default=None)
+    sala = models.ForeignKey(Sala, on_delete=models.CASCADE, default=None)
 
 
 class OcorrenciaReserva(models.Model):
