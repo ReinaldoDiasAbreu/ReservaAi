@@ -20,18 +20,19 @@ def view_reservas(request):
 
 def view_all_reservas(request):
     data = {}
-    predio_busca = request.GET.get('predio_busca', -1)
-    data_busca = request.GET.get('data_busca', -1)
+    predio_busca = request.GET.get('predio_busca', "")
+    data_busca = request.GET.get('data_busca', "")
 
-    if predio_busca != -1 and data_busca != -1:
+    if predio_busca != "" and data_busca != "":
         predio_select = Predio.objects.get(id=predio_busca)
-        ocorrencias = OcorrenciaReserva.objects.filter(data=data_busca)
+        data_busca = datetime.strptime(data_busca, '%Y-%m-%d').date()
+        ocorrencias = OcorrenciaReserva.objects.filter(data=data_busca, reserva__sala__predio=predio_select)
     else:
         predio_select = Predio.objects.all().order_by('nome')[0]
-        ocorrencias = OcorrenciaReserva.objects.filter(data=datetime.today())
-        data_busca = datetime.today().strftime("%d/%m/%Y")
+        ocorrencias = OcorrenciaReserva.objects.filter(data=datetime.today().strftime("%Y-%m-%d"), reserva__sala__predio=predio_select)
+        data_busca = datetime.today()
     data['predio_select'] = predio_select
-    data['data_busca'] = data_busca
+
     if len(ocorrencias) > 0:
         campus = Campus.objects.all()[0]
         if campus:
@@ -43,17 +44,29 @@ def view_all_reservas(request):
             horarios = pd.date_range(hora_inicial, hora_final, freq="25min").time
 
             data['horarios'] = horarios
-            data['salas'] = Sala.objects.all()
+            salas = Sala.objects.filter(predio=data['predio_select']).order_by('nome')
+            data['salas'] = salas
             data['ocorrencias'] = ocorrencias
-
+            print(len(data['salas']))
             reservas_salas = []
-            
+            data_b = data_busca.strftime("%Y-%m-%d")
+            for i in range(len(horarios)):
+                reservas_salas.append([horarios[i]])
+                for j in range(len(salas)):
+                    r = Reserva.objects.filter(sala=salas[j], dataInicio__lte=data_b, dataFim__gte=data_b,
+                                               horaInicio__lte=horarios[i], horaFim__gte=horarios[i])
+                    if len(r) > 0:
+                        reservas_salas[i].append(r[0])
+                    else:
+                        reservas_salas[i].append(False)
+
             data['reservas_salas'] = reservas_salas
         else:
             data['mensagem'] = "Não há campus cadastrado!"
     else:
         data['mensagem'] = "Não existem reservas em nenhuma sala na data pesquisada!"
 
+    data['data_busca'] = data_busca.strftime("%d-%m-%Y")
     predios = Predio.objects.all().order_by('nome')
     data['predios'] = predios
     return render(request, 'reservas/search_reservas.html', data)

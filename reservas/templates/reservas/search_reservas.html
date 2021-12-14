@@ -34,24 +34,42 @@
 {% endblock %}
 {% block lista-reservas %}
     <h4>Prédio: <b>{{ predio_select }}</b>  - Data: <b> {{ data_busca }} </b> </h4>
+    {% if not mensagem %}
     <div class="table-responsive">
-      <table class="table">
+      <table class="table table-bordered table-sm">
       <thead>
-        <tr>
-          <th scope="col">#</th>
+        <tr class="d-flex">
+          <th scope="col" class="col-2">Horário</th>
             {% for sala in salas %}
-                <th scope="col">{{ sala.nome }}</th>
+                <th scope="col" class="col-2">{{ sala.nome }}</th>
             {% endfor %}
         </tr>
       </thead>
         <tbody>
-            <tr>
-                 <th scope="row"> {{ horario }} </th>
-            </tr>
+
+            {% for reserva in reservas_salas %}
+                <tr class="d-flex">
+                    {% for r in reserva %}
+                        {% if r %}
+                            <td class="col-2 table-success">
+                            {% if r.name %}
+                                {{ r.horaInicio }}
+                            {% else %}
+                                {{ r }}
+                            {% endif %}
+
+                            </td>
+                        {% else %}
+                            <td class="col-2"></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+
         </tbody>
       </table>
     </div>
-
+    {% endif %}
 
 {% endblock %}
 

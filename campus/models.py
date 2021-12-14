@@ -43,7 +43,7 @@ class Sala(models.Model):
     capacidade = models.IntegerField()
     ehPreferencial = models.BooleanField()
     predio = models.ForeignKey(Predio, on_delete=models.CASCADE)
-    equipamentos = models.ManyToManyField(Equipamento)
+    equipamentos = models.ManyToManyField(Equipamento, blank=True)
 
     def __str__(self) -> str:
         return self.nome
