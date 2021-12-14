@@ -13,14 +13,14 @@
     <header>
         <nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'users:home' %}">
+                <a class="navbar-brand" href="{% url 'reservas:view_all_reservas' %}">
                     <img src="{% static 'logo.png' %}" alt="Reserva Aí" width="193" height="46">
                 </a>
                 <ul class="navbar-nav">
 
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Cadastro</a>
+                        <a class="nav-link" href="#">Cadastro</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'reservas:reserva' %}">Reservas</a>

@@ -5,10 +5,6 @@ from .models import *
 from .forms import *
 
 
-class HomePageView(TemplateView):
-    template_name = "home.html"
-
-
 def view_coordenadoresCurso(request):
     try:
         if request.user.tipo_usuario == 'CoordenadorEnsino':

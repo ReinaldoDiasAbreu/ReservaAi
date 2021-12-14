@@ -48,5 +48,6 @@ class Sala(models.Model):
     def __str__(self) -> str:
         return self.nome
 
-
+    def eh_reservada(self, data, hora) -> bool:
+        return True
 

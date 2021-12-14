@@ -1,0 +1,57 @@
+{% extends 'temp-view-reservas.html' %}
+
+{% block title %}Reserva Aí{% endblock %}
+
+
+{% block form-filtro %}
+    <div>
+        <form method="GET" action="#" name="form_filter">
+            {% csrf_token %}
+          <div class="form-row align-items-center">
+            <div class="form-row my-1">
+              <label class="mr-sm-2" for="predio_busca">Escolha o prédio:</label>
+              <select class="custom-select mr-sm-2" id="predio_busca" name="predio_busca">
+                  {% for predio in predios %}
+                      <option value="{{ predio.id }}"> {{ predio }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div class="form-row my-1">
+                <label class="mr-sm-2" for="data_busca">Escolha a data:</label>
+                <input class="form-control" id="data_busca" type="date" name="data_busca">
+            </div>
+            <div class="form-row my-1" >
+              <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
+          </div>
+        </form>
+    </div>
+    {% if mensagem %}
+    <div class="alert alert-warning" role="alert">
+        <p>{{ mensagem }}</p>
+    </div>
+    {% endif %}
+{% endblock %}
+{% block lista-reservas %}
+    <h4>Prédio: <b>{{ predio_select }}</b>  - Data: <b> {{ data_busca }} </b> </h4>
+    <div class="table-responsive">
+      <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+            {% for sala in salas %}
+                <th scope="col">{{ sala.nome }}</th>
+            {% endfor %}
+        </tr>
+      </thead>
+        <tbody>
+            <tr>
+                 <th scope="row"> {{ horario }} </th>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+{% endblock %}
+
