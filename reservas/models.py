@@ -3,11 +3,11 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from campus.models import Campus, Sala
 from users.models import User as UserModel
+from django import forms
 import datetime
 
 
 # Validação dos campos
-
 
 def validate_data(value):
     """Valida se a data da reserva está dentro de um período válido"""
@@ -15,7 +15,7 @@ def validate_data(value):
     periodos = Periodo.objects.all()
     periodo_ativo = None
     for periodo in periodos:
-        if periodo.dataFim >= datetime.date.today():
+        if (periodo.dataInicio <= datetime.date.today()) and (periodo.dataFim >= datetime.date.today()) :
             periodo_ativo = periodo
             break
 
@@ -47,16 +47,41 @@ def validate_hora(value):
         )
 
 
+def validate_periodo(value):
+    """Valida se já tem um período ativo"""
+    # Lista de periodos que não venceram
+    periodos = Periodo.objects.all()
+    for periodo in periodos:
+        if periodo.dataInicio <= value <= periodo.dataFim:
+            raise ValidationError(
+                _('Esta data não pode ser usada, já se encontra um período nela! ' + str(periodo))
+            )
+
+
 # Models app Reserva
 
 
 class Periodo(models.Model):
-    dataInicio = models.DateField()
-    dataFim = models.DateField()
+    dataInicio = models.DateField('Data Inicio')
+    dataFim = models.DateField('Data Fim')
     coordenadorEnsino = models.ForeignKey(UserModel, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return "[" + str(self.dataInicio) + " até " + str(self.dataFim) + "]"
+
+    def clean(self):
+        periodos = Periodo.objects.all()
+        for periodo in periodos:
+            if periodo.pk != self.pk:
+                if periodo.dataInicio <= datetime.date.today() <= periodo.dataFim:
+                    raise ValidationError(
+                        _('Esta data não pode ser usada, já se encontra um período nela! ' + str(periodo))
+                    )
+
+        if self.dataInicio > self.dataFim:
+            raise forms.ValidationError(
+                _('A data de fim é anterior a data de início!')
+            )
 
 
 class Reserva(models.Model):

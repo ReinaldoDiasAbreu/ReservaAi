@@ -1,5 +1,9 @@
+import pandas as pd
 from django.db import models
-
+import datetime
+from django import forms
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 class Campus(models.Model):
     nome = models.CharField(max_length=250)
@@ -16,6 +20,12 @@ class Campus(models.Model):
 
     def __str__(self) -> str:
         return self.nome
+
+    def clean(self):
+        if self.horaInicio > self.horaFim:
+            raise forms.ValidationError(
+                _('A hora de fim é anterior a hora de início!')
+            )
 
 
 class Predio(models.Model):
