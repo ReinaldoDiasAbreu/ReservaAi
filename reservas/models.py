@@ -77,6 +77,6 @@ class OcorrenciaReserva(models.Model):
     reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.data)
+        return str(self.data) + ' - ' + self.reserva.titulo
 
 

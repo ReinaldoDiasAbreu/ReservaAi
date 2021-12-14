@@ -19,6 +19,7 @@
                 <td>{{ reserva.titulo }}</td>
                 <td>{{ reserva.descricao }}</td>
                 <td><a href="{% url 'reservas:view_reserva' reserva.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'reservas:delete_reserva' reserva.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a></td>
             </tr>
          {% endfor %}
         </tbody>
