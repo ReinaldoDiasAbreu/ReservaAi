@@ -47,6 +47,12 @@
                     </li>
                     {% endif %}
 
+                    {% if user.is_authenticated and user.tipo_usuario == 'CoordenadorCurso' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:professores' %}">Professores</a>
+                    </li>
+                    {% endif %}
+
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
