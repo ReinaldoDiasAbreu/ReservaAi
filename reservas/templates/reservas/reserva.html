@@ -1,22 +1,36 @@
 {% extends 'template-view-wide-left.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Reserva Aí{% endblock %}
 
-{% block content %}
-<div class="row">
-    <div class="col-8">
-        {% block content-left %}
-        {% endblock %}
-    </div>
-    <div class="col-4">
-        {% block content-right %}
-            <form method="POST" name="form_campus">
-                {% csrf_token %}
-                {{form | crispy}}
-                <button class="btn btn-success" style="float: right;" type="submit">Cadastrar</button>
-            </form>
-        {% endblock %}
-    </div>
-</div>
+{% block content-left %}
+    <h3>Suas Reservas</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Título</th>
+                <th scope="col">Descrição</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for reserva in reservas %}
+            <tr>
+                <td>{{ reserva.id }} </td>
+                <td>{{ reserva.titulo }}</td>
+                <td>{{ reserva.descricao }}</td>
+                <td><a href="{% url 'reservas:view_reserva' reserva.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block content-right %}
+    <h4>Nova Reserva</h4>
+    <form method="POST" name="form_reserva">
+        {% csrf_token %}
+        {{form | crispy}}
+        <button class="btn btn-success" style="float: right;" type="submit">Cadastrar</button>
+    </form>
 {% endblock %}
 

@@ -6,7 +6,7 @@ from .models import *
 class ReservaForm(ModelForm):
     class Meta:
         fields = ['titulo', 'descricao', 'dataInicio', 'dataFim', 'horaInicio',
-                  'horaFim', 'periodo', 'user']
+                  'horaFim']
         model = Reserva
         widgets = {
             'descricao': Textarea(attrs={'rows': '5', 'col': '33'}),
