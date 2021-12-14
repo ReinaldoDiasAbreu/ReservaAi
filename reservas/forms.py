@@ -10,10 +10,10 @@ class ReservaForm(ModelForm):
         model = Reserva
         widgets = {
             'descricao': Textarea(attrs={'rows': '5', 'col': '33'}),
-            'dataInicio': DateInput(attrs={'type': 'date'}),
-            'dataFim': DateInput(attrs={'type': 'date'}),
-            'horaInicio': DateInput(attrs={'type': 'time'}),
-            'horaFim': DateInput(attrs={'type': 'time'}),
+            'dataInicio': DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'dataFim': DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'horaInicio': TimeInput(attrs={'type': 'time'}),
+            'horaFim': TimeInput(attrs={'type': 'time'}),
         }
 
     def __init__(self, *args, **kwargs):
