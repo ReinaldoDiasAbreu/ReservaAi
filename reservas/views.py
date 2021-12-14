@@ -93,3 +93,73 @@ def delete_reserva(request, id_reserva):
     except:
         data = {'mensagem': "Não foi possível excluir a reserva!"}
         return render(request, 'reservas/error.html', data)
+
+
+def view_periodos(request):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            form = PeriodoForm(request.POST or None)
+            current_date = datetime.datetime.now()
+            data['periodos'] = Periodo.objects.all()
+            data['dataAtual'] = datetime.date.today()
+
+            if form.is_valid():
+                form.save()
+                data = {'mensagem': "Período adicionado com sucesso!"}
+                return render(request, 'reservas/periodos/cadastro_sucesso.html', data)
+
+            data['form'] = form
+            return render(request, 'reservas/periodos/periodos.html', data)
+        else:
+            return render(request, 'reservas/periodos/permission_error.html')
+    except:
+        data = {'mensagem': "Ocorreu um erro interno!"}
+        return render(request, 'reservas/error.html', data)
+
+
+def ver_periodo(request, id_periodo):
+    data = {}
+    periodo = Periodo.objects.get(id=id_periodo)
+    if periodo:
+        data['periodo'] = periodo
+        return render(request, 'reservas/periodos/view_periodo.html', data)
+    else:
+        data = {'mensagem': "Não foi possível localizar o período!"}
+        return render(request, 'reservas/error.html', data)
+
+
+def update_periodo(request, id_periodo):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {}
+            data['periodos'] = Periodo.objects.all()
+            data['periodo'] = Periodo.objects.get(id=id_periodo)
+
+            form = PeriodoForm(request.POST or None, instance=data['periodo'])
+            if form.is_valid():
+                form.save()
+                data = {'mensagem': "Período atualizado com sucesso!"}
+                return render(request, 'reservas/periodos/cadastro_sucesso.html', data)
+
+            data['form'] = form
+            return render(request, 'reservas/periodos/update_periodo.html', data)
+        else:
+            return render(request, 'reservas/periodos/permission_error.html')
+    except:
+        data = {'mensagem': "Não foi possível atualizar o período!"}
+        return render(request, 'reservas/error.html', data)
+
+
+def delete_periodo(request, id_periodo):
+    try:
+        if request.user.tipo_usuario == 'CoordenadorEnsino':
+            data = {'mensagem': "Período " + str(id_periodo) + " removido com sucesso!"}
+            periodo = Periodo.objects.get(id=id_periodo)
+            periodo.delete()
+            return render(request, 'reservas/periodos/cadastro_sucesso.html', data)
+        else:
+            return render(request, 'reservas/periodos/permission_error.html')
+    except:
+        data = {'mensagem': "Não foi possível excluir o período!"}
+        return render(request, 'reservas/error.html', data)
