@@ -63,7 +63,8 @@ def view_reservas(request):
             data['form'] = form
             return render(request, 'reservas/reserva.html', data)
         else:
-            return render(request, 'users/coordenadorCurso/permission_error.html')
+            return render(request,
+                          'users/coordenadorCurso/../users/templates/users/coordenadorEnsino/permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'reservas/error.html', data)
@@ -138,7 +139,8 @@ def update_reserva(request, id_reserva):
             data['form'] = form
             return render(request, 'reservas/update_reserva.html', data)
         else:
-            return render(request, 'users/coordenadorCurso/permission_error.html')
+            return render(request,
+                          'users/coordenadorCurso/../users/templates/users/coordenadorEnsino/permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'reservas/error.html', data)
@@ -164,7 +166,8 @@ def delete_reserva(request, id_reserva):
             reserva.delete()
             return render(request, 'reservas/cadastro_sucesso.html', data)
         else:
-            return render(request, 'users/coordenadorCurso/permission_error.html')
+            return render(request,
+                          'users/coordenadorCurso/../users/templates/users/coordenadorEnsino/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir a reserva!"}
         return render(request, 'reservas/error.html', data)
