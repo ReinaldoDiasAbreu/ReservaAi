@@ -28,11 +28,12 @@
 {% endblock %}
 
 {% block content-right %}
-    <h4>Nova Reserva</h4>
+    <h4>Atualizar Reserva</h4>
     <form method="POST" name="form_reserva">
         {% csrf_token %}
         {{form | crispy}}
-        <button class="btn btn-success" style="float: right;" type="submit">Cadastrar</button>
+        <button class="btn btn-success" style="float: right;" type="submit">Atualizar</button>
+        <a href="{% url 'reservas:reserva' %}" class="btn btn-danger active" role="button" aria-pressed="true">Cancelar</a>
     </form>
 {% endblock %}
 

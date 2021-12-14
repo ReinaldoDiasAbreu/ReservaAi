@@ -79,7 +79,7 @@ class OcorrenciaReserva(models.Model):
     eh_ativa = models.BooleanField(default=True)
     reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
 
-    def __str__(self) -> str:
-        return str(self.data)
+    def __str__(self):
+        return str(self.data) + ' - ' + self.reserva.titulo
 
 
