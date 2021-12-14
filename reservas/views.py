@@ -97,9 +97,8 @@ def update_reserva(request, id_reserva):
             if form.is_valid() and periodo_ativo is not None:
                 form.instance.sala = Sala.objects.get(pk=request.POST.get('sala', -1))
                 reservas = Reserva.objects.filter(sala=form.instance.sala).exclude(id=id_reserva)
-
-                for r in reservas:
-                    print(r.titulo)
+                #for r in reservas:
+                #   print(r.titulo)
 
                 dataInicio = form.instance.dataInicio
                 dataFim = form.instance.dataFim
@@ -148,7 +147,6 @@ def update_reserva(request, id_reserva):
         return render(request, 'reservas/error.html', data)
 
 
-
 def ver_reserva(request, id_reserva):
     data = {}
     reserva = Reserva.objects.get(id=id_reserva)
@@ -160,8 +158,22 @@ def ver_reserva(request, id_reserva):
         return render(request, 'reservas/equipamentos/error.html', data)
 
 
+def ver_reserva_all(request, id_reserva):
+    reserva = Reserva.objects.get(id=id_reserva)
+    if reserva:
+        data = {}
+        data['reserva'] = reserva
+        data['user'] = reserva.user
+        return render(request, 'reservas/view_reserva_all.html', data)
+    else:
+        data = {}
+        data = {'mensagem': "Não foi possível localizar a reserva!"}
+        return render(request, 'reservas/equipamentos/error.html', data)
+
+
 def view_all_reservas(request):
     data = {}
+    data['data_atual'] = datetime.today().strftime("%Y-%m-%d")
     predio_busca = request.GET.get('predio_busca', "")
     data_busca = request.GET.get('data_busca', "")
 
@@ -189,7 +201,7 @@ def view_all_reservas(request):
             salas = Sala.objects.filter(predio=data['predio_select']).order_by('nome')
             data['salas'] = salas
             data['ocorrencias'] = ocorrencias
-            print(len(data['salas']))
+
             reservas_salas = []
             data_b = data_busca.strftime("%Y-%m-%d")
             for i in range(len(horarios)):
@@ -208,7 +220,7 @@ def view_all_reservas(request):
     else:
         data['mensagem'] = "Não existem reservas em nenhuma sala na data pesquisada!"
 
-    data['data_busca'] = data_busca.strftime("%d-%m-%Y")
+    data['data_busca'] = data_busca.strftime("%d/%m/%Y")
     predios = Predio.objects.all().order_by('nome')
     data['predios'] = predios
     return render(request, 'reservas/search_reservas.html', data)

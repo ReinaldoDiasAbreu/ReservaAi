@@ -10,7 +10,7 @@
           <div class="form-row align-items-center">
             <div class="form-row my-1">
               <label class="mr-sm-2" for="predio_busca">Escolha o prédio:</label>
-              <select class="custom-select mr-sm-2" id="predio_busca" name="predio_busca">
+              <select class="custom-select mr-sm-2" id="predio_busca" name="predio_busca" required>
                   {% for predio in predios %}
                       <option value="{{ predio.id }}"> {{ predio }}</option>
                   {% endfor %}
@@ -18,7 +18,7 @@
             </div>
             <div class="form-row my-1">
                 <label class="mr-sm-2" for="data_busca">Escolha a data:</label>
-                <input class="form-control" id="data_busca" type="date" name="data_busca">
+                <input class="form-control" id="data_busca" type="date" name="data_busca" min="{{ data_atual }}" required>
             </div>
             <div class="form-row my-1" >
               <button type="submit" class="btn btn-primary">Filtrar</button>
@@ -39,9 +39,9 @@
       <table class="table table-bordered table-sm">
       <thead>
         <tr class="d-flex">
-          <th scope="col" class="col-2">Horário</th>
+          <th scope="col" class="col-1" style="text-align: center">Horário</th>
             {% for sala in salas %}
-                <th scope="col" class="col-2">{{ sala.nome }}</th>
+                <th scope="col" class="col" style="text-align: center">{{ sala.nome }}</th>
             {% endfor %}
         </tr>
       </thead>
@@ -51,16 +51,25 @@
                 <tr class="d-flex">
                     {% for r in reserva %}
                         {% if r %}
-                            <td class="col-2 table-success">
-                            {% if r.name %}
-                                {{ r.horaInicio }}
+                            {% if r.titulo %}
+                                <td class="col">
+                                    <a href="{% url 'reservas:view_reserva_all' r.id %}"
+                                            class="btn btn-success btn-block align-items-center" >
+                                        <div>
+                                            <p>{{ r.titulo }} <br>
+                                                {{ r.user.email }}
+                                                </p>
+                                        </div>
+                                    </a>
+                                </td>
                             {% else %}
+                                <td class="col-1 table-success" style="font-weight: bolder ">
                                 {{ r }}
+                                </td>
                             {% endif %}
 
-                            </td>
                         {% else %}
-                            <td class="col-2"></td>
+                            <td class="col"></td>
                         {% endif %}
                     {% endfor %}
                 </tr>
