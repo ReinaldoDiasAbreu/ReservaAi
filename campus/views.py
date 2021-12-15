@@ -32,7 +32,7 @@ def view_salas(request):
             data['form'] = SalaForm(None)
             return render(request, 'campus/salas/salas.html', data)
         else:
-            return render(request, 'campus/salas/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/salas/error.html', data)
@@ -47,7 +47,7 @@ def delete_salas(request, id_sala, id_predio):
             predio.sala_set.get(pk=id_sala).delete()
             return render(request, 'campus/salas/cadastro_sucesso.html', data)
         else:
-            return render(request, 'campus/salas/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir a sala!"}
         return render(request, 'campus/salas/error.html', data)
@@ -77,7 +77,7 @@ def update_salas(request, id_sala, id_predio):
             data['form'] = form
             return render(request, 'campus/salas/update_salas.html', data)
         else:
-            return render(request, 'campus/salas/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível atualizar a sala!"}
         return render(request, 'campus/salas/error.html', data)
@@ -93,6 +93,7 @@ def ver_sala(request, id_sala):
     else:
         data = {'mensagem': "Não foi possível localizar a sala!"}
         return render(request, 'campus/salas/error.html', data)
+
 
 ################# Predios ######################
 
@@ -126,7 +127,7 @@ def view_predios(request):
             data['form'] = PredioForm(None)
             return render(request, 'campus/predios/predios.html', data)
         else:
-            return render(request, 'campus/predios/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/predios/error.html', data)
@@ -140,7 +141,7 @@ def delete_predios(request, id_predio, id_campus):
             campus.predio_set.get(pk=id_predio).delete()
             return render(request, 'campus/predios/cadastro_sucesso.html', data)
         else:
-            return render(request, 'campus/predios/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir o prédio!"}
         return render(request, 'campus/predios/error.html', data)
@@ -169,10 +170,11 @@ def update_predios(request, id_predio, id_campus):
             data['form'] = form
             return render(request, 'campus/predios/update_predios.html', data)
         else:
-            return render(request, 'campus/predios/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível atualizar o prédio!"}
         return render(request, 'campus/predios/error.html', data)
+
 
 def ver_predio(request, id_predio):
     data = {}
@@ -209,10 +211,11 @@ def view_campus(request):
             data['form'] = CampusForm(None)
             return render(request, 'campus/campus/campus.html', data)
         else:
-            return render(request, 'campus/campus/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/campus/error.html', data)
+
 
 def ver_campus(request, id_campus):
     data = {}
@@ -223,6 +226,7 @@ def ver_campus(request, id_campus):
     else:
         data = {'mensagem': "Não foi possível localizar o campus!"}
         return render(request, 'campus/campus/error.html', data)
+
 
 def update_campus(request, id_campus):
     try:
@@ -244,10 +248,11 @@ def update_campus(request, id_campus):
             data['form'] = form
             return render(request, 'campus/campus/update_campus.html', data)
         else:
-            return render(request, 'permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível atualizar o campus!"}
         return render(request, 'campus/campus/error.html', data)
+
 
 ################# Equipamentos ######################
 
@@ -269,7 +274,7 @@ def view_equips(request):
             data['form'] = form
             return render(request, 'campus/equipamentos/equipamentos.html', data)
         else:
-            return render(request, 'campus/equipamentos/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/equipamentos/error.html', data)
@@ -303,7 +308,7 @@ def update_equip(request, id_equip):
             data['form'] = form
             return render(request, 'campus/equipamentos/update_equipamento.html', data)
         else:
-            return render(request, 'campus/equipamentos/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível atualizar o equipamento!"}
         return render(request, 'campus/equipamentos/error.html', data)
@@ -317,7 +322,7 @@ def delete_equip(request, id_equip):
             equip.delete()
             return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
         else:
-            return render(request, 'campus/equipamentos/permission_error.html')
+            return render(request, '../../templates/permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir o equipamento!"}
         return render(request, 'campus/equipamentos/error.html', data)
