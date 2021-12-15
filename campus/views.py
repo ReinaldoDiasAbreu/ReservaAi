@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from datetime import datetime
+from reservas.models import Reserva
 from .forms import *
 
 
@@ -41,17 +43,22 @@ def view_salas(request):
         return render(request, 'campus/salas/error.html', data)
 
 
-# Faltam as verificações quanto as reservas
 def delete_salas(request, id_sala, id_predio):
     try:
         if not request.user.is_authenticated:
             return render(request, 'permission_error.html')
 
         if request.user.tipo_usuario == 'CoordenadorEnsino':
-            data = {'mensagem': "Sala " + str(id_sala) + " removida com sucesso!"}
             predio = Predio.objects.get(id=id_predio)
-            predio.sala_set.get(pk=id_sala).delete()
-            return render(request, 'campus/salas/cadastro_sucesso.html', data)
+            sala = predio.sala_set.get(pk=id_sala)
+            reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+            if len(reservas) > 0:
+                data = {'mensagem': "Não foi possível excluir a sala! Há reservas em aberto."}
+                return render(request, 'campus/salas/error.html', data)
+            else:
+                sala.delete()
+                data = {'mensagem': "Sala [" + str(sala) + "] removida com sucesso!"}
+                return render(request, 'campus/salas/cadastro_sucesso.html', data)
         else:
             return render(request, 'permission_error.html')
     except:
@@ -59,7 +66,6 @@ def delete_salas(request, id_sala, id_predio):
         return render(request, 'campus/salas/error.html', data)
 
 
-# Faltam as verificações quanto as reservas
 def update_salas(request, id_sala, id_predio):
     try:
         if not request.user.is_authenticated:
@@ -77,11 +83,16 @@ def update_salas(request, id_sala, id_predio):
 
             form = SalaForm(request.POST or None, instance=sala)
             if form.is_valid():
-                sala = form.instance
-                sala.predio = data['predio']
-                sala.save()
-                data = {'mensagem': "Sala atualizada com sucesso!"}
-                return render(request, 'campus/salas/cadastro_sucesso.html', data)
+                reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                if len(reservas) == 0:
+                    sala = form.instance
+                    sala.predio = data['predio']
+                    sala.save()
+                    data = {'mensagem': "Sala atualizada com sucesso!"}
+                    return render(request, 'campus/salas/cadastro_sucesso.html', data)
+                else:
+                    data = {'mensagem': "Não foi possível atualizar a sala! Há reservas pendentes!"}
+                    return render(request, 'campus/salas/error.html', data)
 
             data['form'] = form
             return render(request, 'campus/salas/update_salas.html', data)
@@ -149,24 +160,37 @@ def view_predios(request):
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/predios/error.html', data)
 
-# Faltam as verificações quanto as reservas
+
 def delete_predios(request, id_predio, id_campus):
     try:
         if not request.user.is_authenticated:
             return render(request, 'permission_error.html')
 
         if request.user.tipo_usuario == 'CoordenadorEnsino':
-            data = {'mensagem': "Predio " + str(id_predio) + " removido com sucesso!"}
             campus = Campus.objects.get(id=id_campus)
-            campus.predio_set.get(pk=id_predio).delete()
-            return render(request, 'campus/predios/cadastro_sucesso.html', data)
+            predio = campus.predio_set.get(pk=id_predio)
+            salas = predio.sala_set.all()
+            removed = True
+            for sala in salas:
+                reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                if len(reservas) > 0:
+                    removed = False
+                    break
+
+            if removed:
+                predio.delete()
+                data = {'mensagem': "Predio " + str(id_predio) + " removido com sucesso!"}
+                return render(request, 'campus/predios/cadastro_sucesso.html', data)
+            else:
+                data = {'mensagem': "Não foi possível excluir o prédio! Há salas com reservas pendentes!"}
+                return render(request, 'campus/predios/error.html', data)
         else:
             return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir o prédio!"}
         return render(request, 'campus/predios/error.html', data)
 
-# Faltam as verificações quanto as reservas
+
 def update_predios(request, id_predio, id_campus):
     try:
         if not request.user.is_authenticated:
@@ -184,11 +208,23 @@ def update_predios(request, id_predio, id_campus):
 
             form = PredioForm(request.POST or None, instance=predio)
             if form.is_valid():
-                predio = form.instance
-                predio.campus = data['campus']
-                predio.save()
-                data = {'mensagem': "Prédio atualizado com sucesso!"}
-                return render(request, 'campus/predios/cadastro_sucesso.html', data)
+                salas = predio.sala_set.all()
+                update = True
+                for sala in salas:
+                    reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                    if len(reservas) > 0:
+                        update = False
+                        break
+
+                if update:
+                    predio = form.instance
+                    predio.campus = data['campus']
+                    predio.save()
+                    data = {'mensagem': "Prédio atualizado com sucesso!"}
+                    return render(request, 'campus/predios/cadastro_sucesso.html', data)
+                else:
+                    data = {'mensagem': "Não foi possível atualizar o prédio! Há salas com reservas pendentes!"}
+                    return render(request, 'campus/predios/error.html', data)
 
             data['form'] = form
             return render(request, 'campus/predios/update_predios.html', data)
@@ -278,11 +314,23 @@ def update_campus(request, id_campus):
             campus = Campus.objects.get(id=id_campus)
 
             form = CampusForm(request.POST or None, instance=campus)
+            update = True
             if form.is_valid():
-                campus = form.instance
-                campus.save()
-                data = {'mensagem': "Campus atualizado com sucesso!"}
-                return render(request, 'campus/campus/cadastro_sucesso.html', data)
+                # Se horário de funcionamento do campus foi alterado
+                if form.instance.horaInicio != data['campus'].horaInicio or form.instance.horaFim != data['campus'].horaFim:
+                    reservas = Reserva.objects.filter(dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                    print("Horarios diferentes")
+                    if len(reservas) > 0:
+                        update = False
+
+                if update:
+                    campus = form.instance
+                    campus.save()
+                    data = {'mensagem': "Campus atualizado com sucesso!"}
+                    return render(request, 'campus/campus/cadastro_sucesso.html', data)
+                else:
+                    data = {'mensagem': "Horário de funcionamento não pode ser atualizado, há reservas em aberto!"}
+                    return render(request, 'campus/campus/error.html', data)
 
             data['form'] = form
             return render(request, 'campus/campus/update_campus.html', data)
@@ -351,9 +399,14 @@ def update_equip(request, id_equip):
             form = EquipForm(request.POST or None, instance=data['equipamento'])
 
             if form.is_valid():
-                form.save()
-                data = {'mensagem': "Equipamento atualizado com sucesso!"}
-                return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
+                salas = data['equipamento'].sala_set.all()
+                if len(salas) == 0:
+                    form.save()
+                    data = {'mensagem': "Equipamento atualizado com sucesso!"}
+                    return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
+                else:
+                    data = {'mensagem': "Não foi possível atualizar o equipamento presente em salas!"}
+                    return render(request, 'campus/equipamentos/error.html', data)
 
             data['form'] = form
             return render(request, 'campus/equipamentos/update_equipamento.html', data)
@@ -370,10 +423,15 @@ def delete_equip(request, id_equip):
             return render(request, 'permission_error.html')
 
         if request.user.tipo_usuario == 'CoordenadorEnsino':
-            data = {'mensagem': "Equipamento " + str(id_equip) + " removido com sucesso!"}
             equip = Equipamento.objects.get(id=id_equip)
-            equip.delete()
-            return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
+            salas = equip.sala_set.all()
+            if len(salas) == 0:
+                equip.delete()
+                data = {'mensagem': "Equipamento " + str(id_equip) + " removido com sucesso!"}
+                return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
+            else:
+                data = {'mensagem': "Não foi possível excluir o equipamento presente em salas!"}
+                return render(request, 'campus/equipamentos/error.html', data)
         else:
             return render(request, 'permission_error.html')
     except:
