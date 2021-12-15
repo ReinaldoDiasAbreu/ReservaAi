@@ -95,6 +95,9 @@ class Reserva(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, default=None)
     sala = models.ForeignKey(Sala, on_delete=models.CASCADE, default=None)
 
+    def __str__(self) -> str:
+        return self.titulo
+
 
 class OcorrenciaReserva(models.Model):
     data = models.DateField()
