@@ -1,0 +1,57 @@
+{% extends 'template-view-centered.html' %}
+
+
+ {% block content-center %}
+     <div class="row">
+        <h4>Dados da Reserva</h4>
+     </div>
+     <div class="row">
+         <form action="#">
+              <div class="form-group">
+                <label for="nome">Título </label>
+                <input class="form-control" type="text" id="nome" value="{{reserva.titulo}}" readonly disabled>
+              </div>
+
+             <div class="form-group">
+                <label for="desc">Descrição</label>
+                <textarea class="form-control" id="desc" readonly disabled>{{reserva.descricao}}</textarea>
+             </div>
+             
+             <div class="form-group">
+                <label for="nome">Data Início</label>
+                <input class="form-control" type="text" id="nome" value="{{reserva.dataInicio}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Data Fim</label>
+                <input class="form-control" type="text" id="nome" value="{{reserva.dataFim}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Hora Início</label>
+                <input class="form-control" type="text" id="nome" value="{{reserva.horaInicio}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Hora Fim</label>
+                <input class="form-control" type="text" id="nome" value="{{reserva.horaFim}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Período</label>
+                <input class="form-control" type="text" id="nome" value="{{reserva.periodo}}" readonly disabled>
+             </div>
+
+             <div class="form-group">
+                <label for="nome">Sala</label>
+                <input class="form-control" type="text" id="nome" value="{{reserva.sala}} - {{ reserva.sala.predio }}" readonly disabled>
+             </div>
+
+            <div  class="row" style="float:right;">
+                <a href="{% url 'reservas:reserva' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+             </div>
+            </form>
+     </div>
+
+ {% endblock %}
+

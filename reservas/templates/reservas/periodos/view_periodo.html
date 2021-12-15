@@ -1,0 +1,32 @@
+{% extends 'template-view-centered.html' %}
+
+
+ {% block content-center %}
+     <div class="row">
+        <h4>Dados do Período</h4>
+     </div>
+     <div class="row">
+         <form action="#">
+              <div class="form-group">
+                <label for="nome">Início: </label>
+                <input class="form-control" type="text" id="dataInicio" value="{{periodo.dataInicio}}" readonly disabled>
+              </div>
+
+             <div class="form-group">
+                <label for="desc">Fim</label>
+                <input class="form-control" type="text" id="dataFim" value="{{periodo.dataFim}}" readonly disabled>
+             </div>
+             
+             <div class="form-group">
+                <label for="desc">Coordenador</label>
+                <input class="form-control" type="text" id="coordenador" value="{{periodo.coordenadorEnsino}}" readonly disabled>
+             </div>
+
+            <div  class="row" style="float:right;">
+                <a href="{% url 'reservas:periodo' %}" class="btn btn-secondary active" role="button" aria-pressed="true">Voltar</a>
+             </div>
+            </form>
+     </div>
+
+ {% endblock %}
+

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -5,21 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'users:home' %}">Reserva Aí</a>
+                <a class="navbar-brand" href="{% url 'reservas:view_all_reservas' %}">
+                    <img src="{% static 'logo.png' %}" alt="Reserva Aí" width="193" height="46">
+                </a>
                 <ul class="navbar-nav">
 
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Cadastro</a>
+                        <a class="nav-link" href="#">Cadastro</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Reservas</a>
+                        <a class="nav-link" href="{% url 'reservas:reserva' %}">Reservas</a>
                     </li>
                     {% endif %}
 
@@ -40,6 +44,12 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'campus:equipamento' %}">Equipamento</a>
+                    </li>
+                    {% endif %}
+
+                    {% if user.is_authenticated and user.tipo_usuario == 'CoordenadorCurso' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:professores' %}">Professores</a>
                     </li>
                     {% endif %}
 
@@ -66,7 +76,7 @@
 
     <footer>
         <div class="row justify-content-center align-items-end">
-            &nbsp;&nbsp;
+            &nbsp
         </div>
     </footer>
 

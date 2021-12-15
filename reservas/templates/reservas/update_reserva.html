@@ -1,0 +1,39 @@
+{% extends 'template-view-wide-left.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-left %}
+    <h3>Suas Reservas</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Título</th>
+                <th scope="col">Descrição</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for reserva in reservas %}
+            <tr>
+                <td>{{ reserva.id }} </td>
+                <td>{{ reserva.titulo }}</td>
+                <td>{{ reserva.descricao }}</td>
+                <td><a href="{% url 'reservas:view_reserva' reserva.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'reservas:update_reserva' reserva.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
+                <a href="{% url 'reservas:delete_reserva' reserva.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a></td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block content-right %}
+    <h4>Atualizar Reserva</h4>
+    <form method="POST" name="form_reserva">
+        {% csrf_token %}
+        {{form | crispy}}
+        <button class="btn btn-success" style="float: right;" type="submit">Atualizar</button>
+        <a href="{% url 'reservas:reserva' %}" class="btn btn-danger active" role="button" aria-pressed="true">Cancelar</a>
+    </form>
+{% endblock %}
+
