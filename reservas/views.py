@@ -65,8 +65,7 @@ def view_reservas(request):
             data['form'] = form
             return render(request, 'reservas/reserva.html', data)
         else:
-            return render(request,
-                          'users/coordenadorCurso/../users/templates/users/coordenadorEnsino/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'reservas/error.html', data)
@@ -140,8 +139,7 @@ def update_reserva(request, id_reserva):
             data['form'] = form
             return render(request, 'reservas/update_reserva.html', data)
         else:
-            return render(request,
-                          'users/coordenadorCurso/../users/templates/users/coordenadorEnsino/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'reservas/error.html', data)
@@ -155,37 +153,47 @@ def ver_reserva(request, id_reserva):
         return render(request, 'reservas/view_reserva.html', data)
     else:
         data = {'mensagem': "Não foi possível localizar a reserva!"}
-        return render(request, 'reservas/equipamentos/error.html', data)
+        return render(request, 'reservas/error.html', data)
 
 
 def ver_reserva_all(request, id_reserva):
-    reserva = Reserva.objects.get(id=id_reserva)
-    if reserva:
-        data = {}
-        data['reserva'] = reserva
-        data['user'] = reserva.user
-        return render(request, 'reservas/view_reserva_all.html', data)
-    else:
+    try:
+        reserva = Reserva.objects.get(id=id_reserva)
+        if reserva:
+            data = {}
+            data['reserva'] = reserva
+            data['user'] = reserva.user
+            return render(request, 'reservas/view_reserva_all.html', data)
+        else:
+            data = {}
+            data = {'mensagem': "Não foi possível localizar a reserva!"}
+            return render(request, 'reservas/error_all.html', data)
+    except:
         data = {}
         data = {'mensagem': "Não foi possível localizar a reserva!"}
-        return render(request, 'reservas/equipamentos/error.html', data)
+        return render(request, 'reservas/error_all.html', data)
 
 
 def view_all_reservas(request):
+
     data = {}
     data['data_atual'] = datetime.today().strftime("%Y-%m-%d")
     predio_busca = request.GET.get('predio_busca', "")
     data_busca = request.GET.get('data_busca', "")
-
-    if predio_busca != "" and data_busca != "":
-        predio_select = Predio.objects.get(id=predio_busca)
-        data_busca = datetime.strptime(data_busca, '%Y-%m-%d').date()
-        ocorrencias = OcorrenciaReserva.objects.filter(data=data_busca, reserva__sala__predio=predio_select)
-    else:
-        predio_select = Predio.objects.all().order_by('nome')[0]
-        ocorrencias = OcorrenciaReserva.objects.filter(data=datetime.today().strftime("%Y-%m-%d"), reserva__sala__predio=predio_select)
-        data_busca = datetime.today()
-    data['predio_select'] = predio_select
+    try:
+        if predio_busca != "" and data_busca != "":
+            predio_select = Predio.objects.get(id=predio_busca)
+            data_busca = datetime.strptime(data_busca, '%Y-%m-%d').date()
+            ocorrencias = OcorrenciaReserva.objects.filter(data=data_busca, reserva__sala__predio=predio_select)
+        else:
+            predio_select = Predio.objects.all().order_by('nome')[0]
+            ocorrencias = OcorrenciaReserva.objects.filter(data=datetime.today().strftime("%Y-%m-%d"), reserva__sala__predio=predio_select)
+            data_busca = datetime.today()
+        data['predio_select'] = predio_select
+    except:
+        data = {}
+        data['mensagem'] = "Houve falha ao buscar prédios cadastrados! Contate o coordenador do campus."
+        return render(request, 'error_mensage.html', data)
 
     if len(ocorrencias) > 0:
         campus = Campus.objects.all()[0]
@@ -234,8 +242,7 @@ def delete_reserva(request, id_reserva):
             reserva.delete()
             return render(request, 'reservas/cadastro_sucesso.html', data)
         else:
-            return render(request,
-                          'users/coordenadorCurso/../users/templates/users/coordenadorEnsino/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir a reserva!"}
         return render(request, 'reservas/error.html', data)

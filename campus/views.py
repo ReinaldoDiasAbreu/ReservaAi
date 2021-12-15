@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import *
 
 
 def view_salas(request):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             data['form'] = SalaForm(None)
@@ -32,7 +35,7 @@ def view_salas(request):
             data['form'] = SalaForm(None)
             return render(request, 'campus/salas/salas.html', data)
         else:
-            return render(request, 'campus/salas/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/salas/error.html', data)
@@ -41,13 +44,16 @@ def view_salas(request):
 # Faltam as verificações quanto as reservas
 def delete_salas(request, id_sala, id_predio):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {'mensagem': "Sala " + str(id_sala) + " removida com sucesso!"}
             predio = Predio.objects.get(id=id_predio)
             predio.sala_set.get(pk=id_sala).delete()
             return render(request, 'campus/salas/cadastro_sucesso.html', data)
         else:
-            return render(request, 'campus/salas/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir a sala!"}
         return render(request, 'campus/salas/error.html', data)
@@ -56,6 +62,9 @@ def delete_salas(request, id_sala, id_predio):
 # Faltam as verificações quanto as reservas
 def update_salas(request, id_sala, id_predio):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             data['predios'] = Predio.objects.all()
@@ -77,7 +86,7 @@ def update_salas(request, id_sala, id_predio):
             data['form'] = form
             return render(request, 'campus/salas/update_salas.html', data)
         else:
-            return render(request, 'campus/salas/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível atualizar a sala!"}
         return render(request, 'campus/salas/error.html', data)
@@ -85,6 +94,9 @@ def update_salas(request, id_sala, id_predio):
 
 def ver_sala(request, id_sala):
     data = {}
+    if not request.user.is_authenticated:
+        return render(request, 'permission_error.html')
+
     sala = Sala.objects.get(id=id_sala)
     if sala:
         data['sala'] = sala
@@ -98,6 +110,9 @@ def ver_sala(request, id_sala):
 
 def view_predios(request):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             data['form'] = PredioForm(None)
@@ -126,7 +141,7 @@ def view_predios(request):
             data['form'] = PredioForm(None)
             return render(request, 'campus/predios/predios.html', data)
         else:
-            return render(request, 'campus/predios/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/predios/error.html', data)
@@ -134,13 +149,16 @@ def view_predios(request):
 # Faltam as verificações quanto as reservas
 def delete_predios(request, id_predio, id_campus):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {'mensagem': "Predio " + str(id_predio) + " removido com sucesso!"}
             campus = Campus.objects.get(id=id_campus)
             campus.predio_set.get(pk=id_predio).delete()
             return render(request, 'campus/predios/cadastro_sucesso.html', data)
         else:
-            return render(request, 'campus/predios/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir o prédio!"}
         return render(request, 'campus/predios/error.html', data)
@@ -148,6 +166,9 @@ def delete_predios(request, id_predio, id_campus):
 # Faltam as verificações quanto as reservas
 def update_predios(request, id_predio, id_campus):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             data['campi'] = Campus.objects.all()
@@ -169,13 +190,16 @@ def update_predios(request, id_predio, id_campus):
             data['form'] = form
             return render(request, 'campus/predios/update_predios.html', data)
         else:
-            return render(request, 'campus/predios/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível atualizar o prédio!"}
         return render(request, 'campus/predios/error.html', data)
 
 def ver_predio(request, id_predio):
     data = {}
+    if not request.user.is_authenticated:
+        return render(request, 'permission_error.html')
+
     predio = Predio.objects.get(id=id_predio)
     if predio:
         data['predio'] = predio
@@ -185,11 +209,13 @@ def ver_predio(request, id_predio):
         return render(request, 'campus/predios/error.html', data)
 
 
-
 ################# Campus ######################
 
 def view_campus(request):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             campus = Campus.objects.all()
@@ -209,13 +235,16 @@ def view_campus(request):
             data['form'] = CampusForm(None)
             return render(request, 'campus/campus/campus.html', data)
         else:
-            return render(request, 'campus/campus/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/campus/error.html', data)
 
 def ver_campus(request, id_campus):
     data = {}
+    if not request.user.is_authenticated:
+        return render(request, 'permission_error.html')
+
     campus = Campus.objects.get(id=id_campus)
     if campus:
         data['campus'] = campus
@@ -226,6 +255,9 @@ def ver_campus(request, id_campus):
 
 def update_campus(request, id_campus):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             data['campi'] = Campus.objects.all()
@@ -253,6 +285,9 @@ def update_campus(request, id_campus):
 
 def view_equips(request):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             form = EquipForm(request.POST or None)
@@ -269,14 +304,17 @@ def view_equips(request):
             data['form'] = form
             return render(request, 'campus/equipamentos/equipamentos.html', data)
         else:
-            return render(request, 'campus/equipamentos/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
-        data = {'mensagem': "Ocorreu um erro interno!" }
+        data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'campus/equipamentos/error.html', data)
 
 
 def ver_equip(request, id_equip):
     data = {}
+    if not request.user.is_authenticated:
+        return render(request, 'permission_error.html')
+
     equip = Equipamento.objects.get(id=id_equip)
     if equip:
         data['equip'] = equip
@@ -288,6 +326,9 @@ def ver_equip(request, id_equip):
 
 def update_equip(request, id_equip):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {}
             data['equipamentos'] = Equipamento.objects.all()
@@ -303,7 +344,7 @@ def update_equip(request, id_equip):
             data['form'] = form
             return render(request, 'campus/equipamentos/update_equipamento.html', data)
         else:
-            return render(request, 'campus/equipamentos/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível atualizar o equipamento!"}
         return render(request, 'campus/equipamentos/error.html', data)
@@ -311,13 +352,16 @@ def update_equip(request, id_equip):
 
 def delete_equip(request, id_equip):
     try:
+        if not request.user.is_authenticated:
+            return render(request, 'permission_error.html')
+
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             data = {'mensagem': "Equipamento " + str(id_equip) + " removido com sucesso!"}
             equip = Equipamento.objects.get(id=id_equip)
             equip.delete()
             return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
         else:
-            return render(request, 'campus/equipamentos/permission_error.html')
+            return render(request, 'permission_error.html')
     except:
         data = {'mensagem': "Não foi possível excluir o equipamento!"}
         return render(request, 'campus/equipamentos/error.html', data)
