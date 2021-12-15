@@ -22,3 +22,8 @@ class ReservaForm(ModelForm):
         salas_predio = [(i.id, str(i.predio) + " - " + i.nome + " - Cap: " + str(i.capacidade) ) for i in salas]
         self.fields['sala'] = forms.ChoiceField(choices=salas_predio)
 
+
+class PeriodoForm(ModelForm):
+    class Meta:
+        fields = ['dataInicio', 'dataFim','coordenadorEnsino']
+        model = Periodo
