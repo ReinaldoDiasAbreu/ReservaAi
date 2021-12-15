@@ -147,11 +147,15 @@ def update_reserva(request, id_reserva):
 
 def ver_reserva(request, id_reserva):
     data = {}
-    reserva = Reserva.objects.get(id=id_reserva)
-    if reserva:
-        data['reserva'] = reserva
-        return render(request, 'reservas/view_reserva.html', data)
-    else:
+    try:
+        reserva = Reserva.objects.get(id=id_reserva)
+        if reserva:
+            data['reserva'] = reserva
+            return render(request, 'reservas/view_reserva.html', data)
+        else:
+            data = {'mensagem': "Não foi possível localizar a reserva!"}
+            return render(request, 'reservas/error.html', data)
+    except:
         data = {'mensagem': "Não foi possível localizar a reserva!"}
         return render(request, 'reservas/error.html', data)
 

@@ -96,13 +96,16 @@ def ver_sala(request, id_sala):
     data = {}
     if not request.user.is_authenticated:
         return render(request, 'permission_error.html')
-
-    sala = Sala.objects.get(id=id_sala)
-    if sala:
-        data['sala'] = sala
-        data['equipamentos'] = sala.equipamentos.all()
-        return render(request, 'campus/salas/view_sala.html', data)
-    else:
+    try:
+        sala = Sala.objects.get(id=id_sala)
+        if sala:
+            data['sala'] = sala
+            data['equipamentos'] = sala.equipamentos.all()
+            return render(request, 'campus/salas/view_sala.html', data)
+        else:
+            data = {'mensagem': "Não foi possível localizar a sala!"}
+            return render(request, 'campus/salas/error.html', data)
+    except:
         data = {'mensagem': "Não foi possível localizar a sala!"}
         return render(request, 'campus/salas/error.html', data)
 
@@ -200,11 +203,15 @@ def ver_predio(request, id_predio):
     if not request.user.is_authenticated:
         return render(request, 'permission_error.html')
 
-    predio = Predio.objects.get(id=id_predio)
-    if predio:
-        data['predio'] = predio
-        return render(request, 'campus/predios/view_predio.html', data)
-    else:
+    try:
+        predio = Predio.objects.get(id=id_predio)
+        if predio:
+            data['predio'] = predio
+            return render(request, 'campus/predios/view_predio.html', data)
+        else:
+            data = {'mensagem': "Não foi possível localizar o prédio!"}
+            return render(request, 'campus/predios/error.html', data)
+    except:
         data = {'mensagem': "Não foi possível localizar o prédio!"}
         return render(request, 'campus/predios/error.html', data)
 
@@ -244,14 +251,18 @@ def ver_campus(request, id_campus):
     data = {}
     if not request.user.is_authenticated:
         return render(request, 'permission_error.html')
-
-    campus = Campus.objects.get(id=id_campus)
-    if campus:
-        data['campus'] = campus
-        return render(request, 'campus/campus/view_campus.html', data)
-    else:
+    try:
+        campus = Campus.objects.get(id=id_campus)
+        if campus:
+            data['campus'] = campus
+            return render(request, 'campus/campus/view_campus.html', data)
+        else:
+            data = {'mensagem': "Não foi possível localizar o campus!"}
+            return render(request, 'campus/campus/error.html', data)
+    except:
         data = {'mensagem': "Não foi possível localizar o campus!"}
         return render(request, 'campus/campus/error.html', data)
+
 
 def update_campus(request, id_campus):
     try:
@@ -314,12 +325,15 @@ def ver_equip(request, id_equip):
     data = {}
     if not request.user.is_authenticated:
         return render(request, 'permission_error.html')
-
-    equip = Equipamento.objects.get(id=id_equip)
-    if equip:
-        data['equip'] = equip
-        return render(request, 'campus/equipamentos/view_equipamento.html', data)
-    else:
+    try:
+        equip = Equipamento.objects.get(id=id_equip)
+        if equip:
+            data['equip'] = equip
+            return render(request, 'campus/equipamentos/view_equipamento.html', data)
+        else:
+            data = {'mensagem': "Não foi possível localizar o equipamento!"}
+            return render(request, 'campus/equipamentos/error.html', data)
+    except:
         data = {'mensagem': "Não foi possível localizar o equipamento!"}
         return render(request, 'campus/equipamentos/error.html', data)
 
