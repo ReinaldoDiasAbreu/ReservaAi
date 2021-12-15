@@ -73,7 +73,7 @@ class Periodo(models.Model):
         periodos = Periodo.objects.all()
         for periodo in periodos:
             if periodo.pk != self.pk:
-                if periodo.dataInicio <= datetime.date.today() <= periodo.dataFim:
+                if periodo.dataFim > self.dataInicio:
                     raise ValidationError(
                         _('Esta data não pode ser usada, já se encontra um período nela! ' + str(periodo))
                     )

@@ -25,5 +25,9 @@ class ReservaForm(ModelForm):
 
 class PeriodoForm(ModelForm):
     class Meta:
-        fields = ['dataInicio', 'dataFim','coordenadorEnsino']
+        fields = ['dataInicio', 'dataFim']
         model = Periodo
+        widgets = {
+            'dataInicio': DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'dataFim': DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+        }

@@ -51,7 +51,7 @@ def delete_salas(request, id_sala, id_predio):
         if request.user.tipo_usuario == 'CoordenadorEnsino':
             predio = Predio.objects.get(id=id_predio)
             sala = predio.sala_set.get(pk=id_sala)
-            reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+            reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.date.today().strftime("%Y-%m-%d"))
             if len(reservas) > 0:
                 data = {'mensagem': "Não foi possível excluir a sala! Há reservas em aberto."}
                 return render(request, 'campus/salas/error.html', data)
@@ -62,7 +62,7 @@ def delete_salas(request, id_sala, id_predio):
         else:
             return render(request, 'permission_error.html')
     except:
-        data = {'mensagem': "Não foi possível excluir a sala!"}
+        data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'campus/salas/error.html', data)
 
 
@@ -83,15 +83,14 @@ def update_salas(request, id_sala, id_predio):
 
             form = SalaForm(request.POST or None, instance=sala)
             if form.is_valid():
-                reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.date.today().strftime("%Y-%m-%d"))
                 if len(reservas) == 0:
-                    sala = form.instance
-                    sala.predio = data['predio']
-                    sala.save()
+                    form.instance.predio = data['predio']
+                    form.save()
                     data = {'mensagem': "Sala atualizada com sucesso!"}
                     return render(request, 'campus/salas/cadastro_sucesso.html', data)
                 else:
-                    data = {'mensagem': "Não foi possível atualizar a sala! Há reservas pendentes!"}
+                    data = {'mensagem': "Não foi possível atualizar a sala! Há reservas ativas!"}
                     return render(request, 'campus/salas/error.html', data)
 
             data['form'] = form
@@ -99,7 +98,7 @@ def update_salas(request, id_sala, id_predio):
         else:
             return render(request, 'permission_error.html')
     except:
-        data = {'mensagem': "Não foi possível atualizar a sala!"}
+        data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'campus/salas/error.html', data)
 
 
@@ -172,7 +171,7 @@ def delete_predios(request, id_predio, id_campus):
             salas = predio.sala_set.all()
             removed = True
             for sala in salas:
-                reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.date.today().strftime("%Y-%m-%d"))
                 if len(reservas) > 0:
                     removed = False
                     break
@@ -187,7 +186,7 @@ def delete_predios(request, id_predio, id_campus):
         else:
             return render(request, 'permission_error.html')
     except:
-        data = {'mensagem': "Não foi possível excluir o prédio!"}
+        data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'campus/predios/error.html', data)
 
 
@@ -211,7 +210,7 @@ def update_predios(request, id_predio, id_campus):
                 salas = predio.sala_set.all()
                 update = True
                 for sala in salas:
-                    reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                    reservas = Reserva.objects.filter(sala=sala, dataFim__gte=datetime.date.today().strftime("%Y-%m-%d"))
                     if len(reservas) > 0:
                         update = False
                         break
@@ -233,6 +232,7 @@ def update_predios(request, id_predio, id_campus):
     except:
         data = {'mensagem': "Não foi possível atualizar o prédio!"}
         return render(request, 'campus/predios/error.html', data)
+
 
 def ver_predio(request, id_predio):
     data = {}
@@ -283,6 +283,7 @@ def view_campus(request):
         data = {'mensagem': "Ocorreu um erro interno!" }
         return render(request, 'campus/campus/error.html', data)
 
+
 def ver_campus(request, id_campus):
     data = {}
     if not request.user.is_authenticated:
@@ -318,7 +319,7 @@ def update_campus(request, id_campus):
             if form.is_valid():
                 # Se horário de funcionamento do campus foi alterado
                 if form.instance.horaInicio != data['campus'].horaInicio or form.instance.horaFim != data['campus'].horaFim:
-                    reservas = Reserva.objects.filter(dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
+                    reservas = Reserva.objects.filter(dataFim__gte=datetime.date.today().strftime("%Y-%m-%d"))
                     print("Horarios diferentes")
                     if len(reservas) > 0:
                         update = False

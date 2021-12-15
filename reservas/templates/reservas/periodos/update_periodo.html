@@ -3,15 +3,13 @@
 
 {% block content-left %}
 <div class="row">
-    <h3>Períodos - {% if campus.nome != "" %} {{ campus.nome }} {% endif %}</h3>
+    <h3>Períodos </h3>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Início</th>
                 <th scope="col">Fim</th>
-                <th scope="col">Status</th>
-                <th scope="col">Ações</th>
             </tr>
         </thead>
 
@@ -21,8 +19,6 @@
                 <td>{{ periodo.id }} </td>
                 <td>{{ periodo.dataInicio }}</td>
                 <td>{{ periodo.dataFim }}</td>
-                <td>Desativado</td>
-                <td>{{ periodo.coordenadorEnsino }}</td>
                 <td>
                     <a href="{% url 'reservas:view_periodo' periodo.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
                     <a href="{% url 'reservas:update_periodo' periodo.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>

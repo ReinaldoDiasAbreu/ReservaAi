@@ -10,23 +10,16 @@
                 <th scope="col">#</th>
                 <th scope="col">Início</th>
                 <th scope="col">Fim</th>
-                <th scope="col">Status</th>
-                <th scope="col">Ações</th>
             </tr>
         </thead>
 
         <tbody>
+
         {% for periodo in periodos %}
             <tr>
                 <td>{{ periodo.id }} </td>
                 <td>{{ periodo.dataInicio }}</td>
                 <td>{{ periodo.dataFim }}</td>
-                {% if periodo.dataInicio <= dataAtual and periodo.dataFim >= dataAtual %}
-                    <td>Ativo</td>
-                {% else %}
-                    <td>Desativo</td>
-                {%  endif %}
-                <td>{{ periodo.coordenadorEnsino }}</td>
                 <td>
                     <a href="{% url 'reservas:view_periodo' periodo.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
                     <a href="{% url 'reservas:update_periodo' periodo.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
