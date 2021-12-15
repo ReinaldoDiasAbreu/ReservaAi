@@ -19,7 +19,6 @@ class ReservaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReservaForm, self).__init__(*args, **kwargs)
         salas = Sala.objects.all().order_by('predio', 'nome')
-
-        salas_predio = [(i.id, i.nome + " - " + str(i.predio)) for i in salas]
+        salas_predio = [(i.id, str(i.predio) + " - " + i.nome + " - Cap: " + str(i.capacidade) ) for i in salas]
         self.fields['sala'] = forms.ChoiceField(choices=salas_predio)
 
