@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="alert alert-danger" role="alert">
+        <p>{{ mensagem }}</p>
+        <a href="{% url 'reservas:reserva' %}" class="btn btn-secondary active btn-sm" role="button" aria-pressed="true">Voltar</a>
+    </div>
+
+{% endblock %}

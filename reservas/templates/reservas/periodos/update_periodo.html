@@ -1,0 +1,43 @@
+{% extends 'template-view-wide-left.html' %}
+{% load crispy_forms_tags %}
+
+{% block content-left %}
+<div class="row">
+    <h3>Períodos </h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Início</th>
+                <th scope="col">Fim</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for periodo in periodos %}
+            <tr>
+                <td>{{ periodo.id }} </td>
+                <td>{{ periodo.dataInicio }}</td>
+                <td>{{ periodo.dataFim }}</td>
+                <td>
+                    <a href="{% url 'reservas:view_periodo' periodo.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-eye"></i></a>
+                    <a href="{% url 'reservas:update_periodo' periodo.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-pencil-square"></i></a>
+                    <a href="{% url 'reservas:delete_periodo' periodo.id %}" class="btn" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block content-right %}
+<h4>Atualizar Período</h4>
+<form method="POST" name="form_periodo">
+    {% csrf_token %}
+    {{form | crispy}}
+    <button class="btn btn-primary" type="submit">Atualizar</button>
+    <a href="{% url 'reservas:periodo' %}" class="btn btn-danger active" role="button" aria-pressed="true">Cancelar</a>
+</form>
+{% endblock %}
