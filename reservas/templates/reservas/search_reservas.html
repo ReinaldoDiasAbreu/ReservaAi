@@ -59,7 +59,7 @@
                             {% if r|type_query %}
                                 <td>
                                 {% for ri in r %}
-                                    <a href="" class="btn btn-success btn-block align-items-center" >
+                                    <a href="{% url 'reservas:view_reserva_all' ri.id %}" class="btn btn-success btn-block align-items-center" >
                                         <p>{{ ri.titulo }}</p>
                                     </a>
                                 {% endfor %}
