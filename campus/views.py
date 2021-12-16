@@ -406,7 +406,7 @@ def update_equip(request, id_equip):
                     data = {'mensagem': "Equipamento atualizado com sucesso!"}
                     return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
                 else:
-                    data = {'mensagem': "Não foi possível atualizar o equipamento presente em salas!"}
+                    data = {'mensagem': "Não é possível atualizar equipamentos que estão em uso em salas!"}
                     return render(request, 'campus/equipamentos/error.html', data)
 
             data['form'] = form
@@ -431,7 +431,7 @@ def delete_equip(request, id_equip):
                 data = {'mensagem': "Equipamento " + str(id_equip) + " removido com sucesso!"}
                 return render(request, 'campus/equipamentos/cadastro_sucesso.html', data)
             else:
-                data = {'mensagem': "Não foi possível excluir o equipamento presente em salas!"}
+                data = {'mensagem': "Não é possível excluir equipamentos que estão em uso em salas!"}
                 return render(request, 'campus/equipamentos/error.html', data)
         else:
             return render(request, 'permission_error.html')
