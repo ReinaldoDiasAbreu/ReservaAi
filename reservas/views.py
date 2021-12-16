@@ -4,7 +4,7 @@ from datetime import datetime
 import pandas as pd
 from django.utils import timezone
 from campus.models import Predio
-
+from django.db.models import Q
 
 def view_reservas(request):
     try:
@@ -224,10 +224,11 @@ def view_all_reservas(request):
             for i in range(len(horarios)):
                 reservas_salas.append([horarios[i]])
                 for j in range(len(salas)):
+
                     r = Reserva.objects.filter(sala=salas[j], dataInicio__lte=data_b, dataFim__gte=data_b,
                                                horaInicio__lte=horarios[i], horaFim__gte=horarios[i])
                     if len(r) > 0:
-                        reservas_salas[i].append(r[0])
+                        reservas_salas[i].append(r)
                     else:
                         reservas_salas[i].append(False)
 

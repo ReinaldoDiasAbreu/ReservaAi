@@ -2,6 +2,7 @@
 
 {% block title %}Reserva Aí{% endblock %}
 
+{% load util %}
 
 {% block form-filtro %}
     <div>
@@ -18,7 +19,7 @@
             </div>
             <div class="form-row my-1">
                 <label class="mr-sm-2" for="data_busca">Escolha a data:</label>
-                <input class="form-control" id="data_busca" type="date" name="data_busca" min="{{ data_atual }}" required>
+                <input class="form-control" id="data_busca" type="date" name="data_busca" min="{{data_atual}}" required>
             </div>
             <div class="form-row my-1" >
               <button type="submit" class="btn btn-primary">Filtrar</button>
@@ -50,24 +51,22 @@
             {% for reserva in reservas_salas %}
                 <tr>
                     {% for r in reserva %}
-                        {% if r %}
-                            {% if r.titulo %}
+                        {% if r|type_date %}
+                            <td class="col-1 table-success" style="text-align: center; font-weight: bolder ">
+                                {{ r }}
+                            </td>
+                        {% else %}
+                            {% if r|type_query %}
                                 <td>
-                                    <a href="{% url 'reservas:view_reserva_all' r.id %}"
-                                            class="btn btn-success btn-block align-items-center" >
-                                        <div>
-                                            <p>{{ r.titulo }}</p>
-                                        </div>
+                                {% for ri in r %}
+                                    <a href="" class="btn btn-success btn-block align-items-center" >
+                                        <p>{{ ri.titulo }}</p>
                                     </a>
+                                {% endfor %}
                                 </td>
                             {% else %}
-                                <td class="col-1 table-success" style="text-align: center; font-weight: bolder ">
-                                {{ r }}
-                                </td>
+                                <td></td>
                             {% endif %}
-
-                        {% else %}
-                            <td></td>
                         {% endif %}
                     {% endfor %}
                 </tr>
