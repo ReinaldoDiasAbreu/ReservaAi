@@ -145,14 +145,14 @@ def delete_professor(request, id_professor):
             professor = User.objects.get(id=id_professor)
             reservas = Reserva.objects.filter(user=professor, dataFim__gte=datetime.today().strftime("%Y-%m-%d"))
             if len(reservas) == 0:
-                data = {'mensagem': "Professor " + professor.nome + " removido com sucesso!"}
+                data = {'mensagem': "Professor removido com sucesso!"}
                 professor.delete()
                 return render(request, 'users/coordenadorCurso/cadastro_sucesso.html', data)
             else:
-                data = {'mensagem': "Não foi possível excluir o Professor(a)! Há reservas em aberto."}
+                data = {'mensagem': "Não foi possível excluir o Professor! Há reservas em aberto."}
                 return render(request, 'users/coordenadorCurso/error.html', data)
         else:
             return render(request, 'permission_error.html')
     except:
-        data = {'mensagem': "Não foi possível excluir o Professor!"}
+        data = {'mensagem': "Ocorreu um erro interno!"}
         return render(request, 'users/coordenadorCurso/error.html', data)
