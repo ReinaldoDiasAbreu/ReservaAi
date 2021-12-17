@@ -19,50 +19,50 @@
                 <ul class="navbar-nav">
 
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Cadastro</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'reservas:reserva' %}">Reservas</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Cadastro</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'reservas:reserva' %}">Reservas</a>
+                        </li>
                     {% endif %}
 
                     {% if user.is_authenticated and user.tipo_usuario == 'CoordenadorEnsino' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'campus:campus' %}">Campus</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'campus:predio' %}">Prédios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:coordenadorescurso' %}">Coordenadores</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'campus:campus' %}">Campus</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'campus:predio' %}">Prédios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:coordenadorescurso' %}">Coordenadores</a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'campus:sala' %}">Salas</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'campus:sala' %}">Salas</a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'campus:equipamento' %}">Equipamento</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'campus:equipamento' %}">Equipamento</a>
+                        </li>
                     {% endif %}
 
                     {% if user.is_authenticated and user.tipo_usuario == 'CoordenadorCurso' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:professores' %}">Professores</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:professores' %}">Professores</a>
+                        </li>
                     {% endif %}
 
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Sair</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">Entrar</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_logout' %}">Sair</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_login' %}">Entrar</a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>

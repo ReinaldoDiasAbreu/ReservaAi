@@ -171,7 +171,7 @@ def ver_reserva_all(request, id_reserva):
         if reserva:
             data = {}
             data['reserva'] = reserva
-            data['user'] = reserva.user
+            data['proprietario'] = reserva.user
             return render(request, 'reservas/view_reserva_all.html', data)
         else:
             data = {}
