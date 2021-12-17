@@ -21,7 +21,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 * Você instalou a versão mais recente do Python e as dependências em REQUIRIMENTS.
-* Pode utilizar um servidor com as hariáveis de ambiente configuradas (Ex: Heroku)
+* Pode utilizar um servidor com as variáveis de ambiente configuradas (Ex: Heroku)
 
 
 ## 🤝 Colaboradores
